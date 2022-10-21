@@ -1,0 +1,43 @@
+<mujoco model="tabletop">
+    <compiler angle="radian" meshdir="meshes/" />
+    <!-- <size njmax="500" nconmax="100" /> -->
+    <option timestep="0.01" integrator="RK4" solver="CG" tolerance="1e-6"/>
+    <size nconmax="500" njmax="5000" nstack="5000000"/>
+    <asset>
+        <mesh name="JokkmokkTable0" file="JokkmokkTable_hull_1.stl" />
+        <mesh name="JokkmokkTable1" file="JokkmokkTable_hull_2.stl" />
+        <mesh name="JokkmokkTable2" file="JokkmokkTable_hull_3.stl" />
+        <mesh name="JokkmokkTable3" file="JokkmokkTable_hull_4.stl" />
+        <mesh name="JokkmokkTable4" file="JokkmokkTable_hull_5.stl" />
+        <mesh name="JokkmokkTable5" file="JokkmokkTable_hull_6.stl" />
+        <mesh name="JokkmokkTable6" file="JokkmokkTable_hull_7.stl" />
+        <mesh name="JokkmokkTable7" file="JokkmokkTable_hull_8.stl" />
+        <mesh name="JokkmokkTable8" file="JokkmokkTable_hull_9.stl" />
+        <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4" />
+        <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" />
+    </asset>
+    <contact>
+        <pair geom1="table0" geom2="box1"/>
+    </contact>
+    <worldbody>
+      <geom name="floor" size="0 0 .05" type="plane" material="grid" condim="3" />
+      <light diffuse=".5 .5 .5" pos="0 0 2" dir="0 0 -1" />
+      <body name="block" pos="1.5 0 0.8" quat="0.707107 0 0 0.707107">
+        <inertial pos="0 0 0" quat="0 0 0 1" mass="1" diaginertia="0.001667 0.001667 0.001667"/>
+        <joint name="joint_block" type="free"/>
+        <geom name="box1" size="0.05 0.05 0.05" rgba="0.43 0.1647 0.1647 1" type="box" conaffinity="1"/>
+      </body>
+      <body name="table" pos="1.5 0 0.35" quat="0.707107 0 0 0.707107">
+            <inertial pos="0 0 0" quat="0 0 0 1" mass="2" diaginertia="1 1 1" />
+            <geom name="table0" type="mesh" mesh="JokkmokkTable0" />
+            <geom type="mesh" mesh="JokkmokkTable1" />
+            <geom type="mesh" mesh="JokkmokkTable2" />
+            <geom type="mesh" mesh="JokkmokkTable3" />
+            <geom type="mesh" mesh="JokkmokkTable4" />
+            <geom type="mesh" mesh="JokkmokkTable5" />
+            <geom type="mesh" mesh="JokkmokkTable6" />
+            <geom type="mesh" mesh="JokkmokkTable7" />
+            <geom type="mesh" mesh="JokkmokkTable8" />
+      </body>
+    </worldbody>
+</mujoco>
