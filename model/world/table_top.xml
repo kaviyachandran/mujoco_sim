@@ -1,5 +1,5 @@
 <mujoco model="tabletop">
-    <compiler angle="radian" meshdir="meshes/" />
+    <compiler angle="radian" meshdir="/home/kaviya/giskard_ws/src/mujoco_sim/model/world/meshes" />
     <!-- <size njmax="500" nconmax="100" /> -->
     <option timestep="0.01" integrator="RK4" solver="CG" tolerance="1e-6"/>
     <size nconmax="500" njmax="5000" nstack="5000000"/>
@@ -22,12 +22,12 @@
     <worldbody>
       <geom name="floor" size="0 0 .05" type="plane" material="grid" condim="3" />
       <light diffuse=".5 .5 .5" pos="0 0 2" dir="0 0 -1" />
-      <body name="box_main" pos="-3.140 0.310 0.855" quat="0.707 0 0 0.707107">
+      <body name="box_main" pos="1.040 0.3 0.85" quat="0.707 0 0 0.707107">
         <inertial pos="0 0 0" quat="0 0 0 1" mass="1" diaginertia="0.001667 0.001667 0.001667"/>
         <joint name="joint_block" type="free"/>
-        <geom name="box1" size="0.05 0.05 0.10" rgba="0.43 0.1647 0.1647 1" type="box" conaffinity="1"/>
+        <geom name="box1" size="0.025 0.025 0.050" rgba="0.43 0.1647 0.1647 1" type="box" conaffinity="1"/>
       </body>
-      <body name="jokkmokk_table_main" pos="-3.380 0.310 0.350" quat="0.707 0 0 0.707107">
+      <body name="jokkmokk_table_main" pos="1.40 0.110 0.350" quat="0.707 0 0 0.70710">
             <inertial pos="0 0 0" quat="0 0 0 1" mass="2" diaginertia="1 1 1" />
             <geom name="table0" type="mesh" mesh="JokkmokkTable0" />
             <geom type="mesh" mesh="JokkmokkTable1" />
@@ -40,4 +40,6 @@
             <geom type="mesh" mesh="JokkmokkTable8" />
       </body>
     </worldbody>
+    <include file="./door.xml"/> -->
+    <include file="../pr2_mujoco_model/pr2_calibrated_with_ft2_without_virtual_joints.xml"/>
 </mujoco>
