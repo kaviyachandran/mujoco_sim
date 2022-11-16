@@ -178,6 +178,11 @@
                                                     <inertial pos="0.00423 0.00284 0" quat="0.249588 0.661594 -0.249588 0.661594" mass="0.04419" diaginertia="1.54177e-05 1.50049e-05 3.23624e-06"/>
                                                     <joint name="r_gripper_l_finger_tip_joint" pos="0 0 0" axis="0 0 -1" limited="true" range="0 0.548" damping="0.001"/>
                                                     <geom name="r_gripper_l_finger_tip" type="mesh" rgba="0 0.8 0 1" mesh="l_finger_tip"/>
+                                                    <body name="rl_dummy_body" pos="0 0 -0.1">
+                                                        <inertial pos="0 0 0" mass="0.0001" diaginertia="0 0 0" />
+                                                        <geom type="box" pos="0 0 0" size="0.001 0.001 0.001" rgba="0 1 0 1"/>
+                                                        <site name="rl_tip_sensor" pos="0 0 0" rgba="1 0 0 0" size="0.01 0.01 0.01" type="box"/>
+                                                    </body>
                                                 </body>
                                             </body>
                                             <body name="r_gripper_r_finger_link" pos="0.07691 -0.01 0">
@@ -188,6 +193,11 @@
                                                     <inertial pos="0.00423 -0.00284 0" quat="-0.249588 0.661594 0.249588 0.661594" mass="0.04419" diaginertia="1.54177e-05 1.50049e-05 3.23624e-06"/>
                                                     <joint name="r_gripper_r_finger_tip_joint" pos="0 0 0" axis="0 0 1" limited="true" range="0 0.548" damping="0.001"/>
                                                     <geom name="r_gripper_r_finger_tip" quat="0 1 0 0" type="mesh" rgba="0 0.8 0 1" mesh="l_finger_tip"/>
+                                                    <body name="rr_dummy_body" pos="0 0 0">
+                                                        <inertial pos="0 0 0" mass="0.0001" diaginertia="0 0 0" />
+                                                        <geom type="box" pos="0 0 0" size="0.001 0.001 0.001" rgba="0 1 0 1"/>
+                                                        <site name="rr_tip_sensor" pos="0 0 0" rgba="1 0 0 0" size="0.01 0.01 0.01" type="box"/>
+                                                    </body>
                                                 </body>
                                             </body>
                                         </body>
@@ -246,6 +256,11 @@
                                                     <inertial pos="0.00423 0.00284 0" quat="0.249588 0.661594 -0.249588 0.661594" mass="0.04419" diaginertia="1.54177e-05 1.50049e-05 3.23624e-06"/>
                                                     <joint name="l_gripper_l_finger_tip_joint" pos="0 0 0" axis="0 0 -1" limited="true" range="0 0.548" damping="0.001"/>
                                                     <geom name="l_gripper_l_finger_tip" type="mesh" rgba="0 0.8 0 1" mesh="l_finger_tip"/>
+                                                    <body name="ll_dummy_body" pos="0 0 -0.1">
+                                                        <inertial pos="0 0 0" mass="0.0001" diaginertia="0 0 0" />
+                                                        <geom type="box" pos="0 0 0" size="0.001 0.001 0.001" rgba="0 1 0 1"/>
+                                                        <site name="ll_tip_sensor" pos="0 0 0" rgba="1 0 0 0" size="0.01 0.01 0.01" type="box"/>
+                                                    </body>
                                                 </body>
                                             </body>
                                             <body name="l_gripper_r_finger_link" pos="0.11251 -0.01 0">
@@ -256,6 +271,11 @@
                                                     <inertial pos="0.00423 -0.00284 0" quat="-0.249588 0.661594 0.249588 0.661594" mass="0.04419" diaginertia="1.54177e-05 1.50049e-05 3.23624e-06"/>
                                                     <joint name="l_gripper_r_finger_tip_joint" pos="0 0 0" axis="0 0 1" limited="true" range="0 0.548" damping="0.001"/>
                                                     <geom name="l_gripper_r_finger_tip" quat="0 1 0 0" type="mesh" rgba="0 0.8 0 1" mesh="l_finger_tip"/>
+                                                    <body name="lr_dummy_body" pos="0 0 -0.1">
+                                                        <inertial pos="0 0 0" mass="0.0001" diaginertia="0 0 0" />
+                                                        <geom type="box" pos="0 0 0" size="0.001 0.001 0.001" rgba="0 1 0 1"/>
+                                                        <site name="lr_tip_sensor" pos="0 0 0" rgba="1 0 0 0" size="0.01 0.01 0.01" type="box"/>
+                                                    </body>
                                                 </body>
                                             </body>
                                         </body>
@@ -281,4 +301,14 @@
         <joint joint1="r_gripper_r_finger_joint" joint2="r_gripper_l_finger_joint" polycoef="0.000000 1.000000  0 0 0"/>
         <joint joint1="r_gripper_r_finger_tip_joint" joint2="r_gripper_l_finger_joint" polycoef="0.000000 1.000000  0 0 0"/>
     </equality>
+    <sensor>
+        <force site="ll_tip_sensor" name="force_ll"/>
+        <torque site="ll_tip_sensor" name="torque_ll"/>
+        <force site="lr_tip_sensor" name="force_lr"/>
+        <torque site="lr_tip_sensor" name="torque_lr"/>
+        <force site="rl_tip_sensor" name="force_rl"/>
+        <torque site="rl_tip_sensor" name="torque_rl"/>
+        <force site="rr_tip_sensor" name="force_rr"/>
+        <torque site="rr_tip_sensor" name="torque_rr"/>
+    </sensor>
 </mujoco>
