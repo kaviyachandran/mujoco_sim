@@ -61,12 +61,19 @@ void MjVisual::init()
     glfwSetScrollCallback(window, &MjVisual::scroll);
 
     double arr_view[] = {89.608063, -11.588379, 5, 0.000000, 0.000000, 1.000000};
-    cam.azimuth = arr_view[0];
-    cam.elevation = arr_view[1];
-    cam.distance = arr_view[2];
-    cam.lookat[0] = arr_view[3];
-    cam.lookat[1] = arr_view[4];
-    cam.lookat[2] = arr_view[5];
+    // cam.azimuth = arr_view[0];
+    // cam.elevation = arr_view[1];
+    // cam.distance = arr_view[2];
+    // cam.lookat[0] = arr_view[3];
+    // cam.lookat[1] = arr_view[4];
+    // cam.lookat[2] = arr_view[5];
+
+    /* stat is the model statistics. m->stat.extent refers to model extent
+    center is the center of the model  */
+    cam.distance = 1.5*m->stat.extent;
+    cam.lookat[0] = m->stat.center[0];
+    cam.lookat[1] = m->stat.center[1];
+    cam.lookat[2] = m->stat.center[2];
 }
 
 void MjVisual::mouse_move(GLFWwindow *window, double xpos, double ypos)
