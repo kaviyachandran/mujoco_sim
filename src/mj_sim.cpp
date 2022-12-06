@@ -567,7 +567,8 @@ static void add_old_state(mjModel *m_new, mjData *d_new)
 		ROS_WARN("Old model has %d sensors, new model has %d sensors, not supported, will be ignored...", m->nsensordata, m_new->nsensordata);
 	}
 	else
-	{
+	{   
+		// std::cout << "sensor data " << d->sensordata << std::endl;
 		mju_copy(d_new->sensordata, d->sensordata, m->nsensordata);
 	}
 
@@ -720,6 +721,7 @@ void MjSim::init_sensors()
 			else
 			{
 				sensor_name = mj_id2name(m, mjtObj::mjOBJ_SENSOR, sensor_id);
+				// std::cout << "sensor_name " << sensor_name << std::endl;
 			}
 		}
 		else if (m->sensor_type[sensor_id] == mjtSensor::mjSENS_TORQUE)
@@ -734,6 +736,7 @@ void MjSim::init_sensors()
 			else
 			{
 				sensor_name = mj_id2name(m, mjtObj::mjOBJ_SENSOR, sensor_id);
+				// std::cout << "torque sensor_name " << sensor_name << std::endl;
 			}
 		}
 		else

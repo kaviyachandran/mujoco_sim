@@ -27,6 +27,7 @@
 #include "mujoco_msgs/ObjectStateArray.h"
 #include "mujoco_msgs/ObjectStatus.h"
 #include "mujoco_msgs/SpawnObject.h"
+#include "mujoco_msgs/ResetObject.h"
 
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
@@ -121,6 +122,16 @@ private:
      * @return false Fail
      */
     bool reset_robot_service(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &res);
+
+    /**
+     * @brief Reset the object to the initial joint state service
+     *
+     * @param req Request
+     * @param res Response
+     * @return true Success
+     * @return false Fail
+     */
+    bool reset_object_service(mujoco_msgs::ResetObjectRequest &req, mujoco_msgs::ResetObjectResponse &res);
 
     /**
      * @brief Spawn objects from ROS
@@ -220,6 +231,8 @@ private:
 
     ros::ServiceServer reset_robot_server;
 
+    ros::ServiceServer reset_object_server;
+
     ros::ServiceServer spawn_objects_server;
 
     ros::ServiceServer destroy_objects_server;
@@ -242,9 +255,6 @@ private:
 };
 
 /**
- * @brief This function `urdf::Model::initParamWithNodeHandle` should be inside the implementation file, but c++ doesn't want to compile...
- * It makes no sense to put it here, I know...
- * If anyone know how to fix this, please kindly tell me, you will earn a lot of respect from me and my friends :) May your name be honoured!
  *
  * @param urdf_model The urdf model to be initialized
  * @param n The node handle

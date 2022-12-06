@@ -185,6 +185,9 @@ void MjRos::init()
     reset_robot_server = n.advertiseService("reset", &MjRos::reset_robot_service, this);
     ROS_INFO("Started [%s] service.", reset_robot_server.getService().c_str());
 
+    reset_object_server = n.advertiseService("/mujoco/reset_object_joint_state", &MjRos::reset_object_service, this);
+    ROS_INFO("Started [%s] service.", reset_object_server.getService().c_str());
+
     spawn_objects_server = n.advertiseService("/mujoco/spawn_objects", &MjRos::spawn_objects_service, this);
     ROS_INFO("Started [%s] service.", spawn_objects_server.getService().c_str());
 
@@ -334,6 +337,22 @@ bool MjRos::reset_robot_service(std_srvs::TriggerRequest &req, std_srvs::Trigger
         }
     }
     return true;
+}
+
+bool MjRos::reset_object_service(mujoco_msgs::ResetObjectRequest &req, mujoco_msgs::ResetObjectResponse &res)
+{   
+    try{
+        int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, req.object_joint_name.c_str());
+        std::cout << "joint id " << joint_id << "val " << d->qpos[m->jnt_qposadr[joint_id]] << std::endl;
+        d->qpos[m->jnt_qposadr[joint_id]] = req.joint_value;
+        res.status = true;
+        return true;
+    }
+    catch (std::exception& e){
+        ROS_WARN("Error in reset object service");
+        res.status = false;
+        return false;
+    }
 }
 
 bool MjRos::spawn_objects_service(mujoco_msgs::SpawnObjectRequest &req, mujoco_msgs::SpawnObjectResponse &res)
@@ -820,7 +839,17 @@ void MjRos::publish_tf()
                 br.sendTransform(transform);
             }
         }
-
+        // int no_of_body = m->nbody;
+       
+        // for(int i=0; i < no_of_body; i++)
+        // {   
+        //     const char* name = mj_id2name(m, mjtObj::mjOBJ_BODY, i);
+        //     int temp = i*3;
+        //     int q = i*4;
+        //     std::cout << "name " << name << std::endl;
+        //     std::cout << " body pos " << d->xpos[temp] << " " << 
+        //     d->xpos[temp+1] << " " << d->xpos[temp+2] << " quat " << d->xquat[q] << " " << d->xquat[q+1] << " " << d->xquat[q+2] << " " <<  d->xquat[q+3] << std::endl;
+        // }
         ros::spinOnce();
         loop_rate.sleep();
     }
@@ -1069,6 +1098,8 @@ void MjRos::publish_sensor_data()
             sensor_data.vector.x = d->sensordata[sensor_adr];
             sensor_data.vector.y = d->sensordata[sensor_adr + 1];
             sensor_data.vector.z = d->sensordata[sensor_adr + 2];
+
+            // std::cout << "data " << sensor.second << " " << d->sensordata[sensor_adr] << std::endl;
 
             sensors_pub.publish(sensor_data);
         }
