@@ -33,7 +33,7 @@
                         <body name="door_handle_one" pos="0.140 -0.040 0" quat="0.707388 -0.706825 0 0">
                             <inertial pos="0 0 0" quat="0 0 0 1" mass="0.125" diaginertia="0.00002369 0.00002369 0.00001406"/>
                             <geom size="0.015 0.02" type="cylinder" rgba="0 0 1 1"/>
-                            <body name="door_handle_two" pos="-0.040 0.0 -0.021" quat="0.707 0.0 0.707 0.0 ">
+                            <body name="door_handle_two" pos="-0.040 0.0 -0.03" quat="0.707 0.0 0.707 0.0 ">
                                 <inertial pos="0 0 0" quat="0 0 0 1" mass="0.250" diaginertia="0.0001828125 0.0001828125 0.00002812"/>
                                 <geom size="0.015 0.06"  type="cylinder" rgba="0 0 1 1"/>
                             </body>

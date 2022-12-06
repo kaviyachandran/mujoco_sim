@@ -1,7 +1,10 @@
 <mujoco model="tabletop">
     <compiler angle="radian" meshdir="/home/kaviya/giskard_ws/src/mujoco_sim/model/world/meshes" />
     <!-- <size njmax="500" nconmax="100" /> -->
-    <option timestep="0.01" integrator="RK4" solver="CG" tolerance="1e-6"/>
+    <option timestep="0.01" integrator="RK4" solver="CG" tolerance="1e-6">
+        <flag multiccd="enable" />
+    </option>
+
     <size nconmax="500" njmax="5000" nstack="5000000"/>
     <asset>
         <mesh name="JokkmokkTable0" file="JokkmokkTable_hull_1.stl" />
@@ -22,7 +25,7 @@
 
     <default>
         <joint limited="false" damping="10" armature=".05"/>
-        <geom contype="1" conaffinity="0" friction="1 0.1 0.1" />
+        <geom contype="1" conaffinity="0" friction="1 0.1 0.1" condim="3"/>
     </default>
 
     <worldbody>
@@ -79,7 +82,7 @@
                             <geom size="0.015 0.02" type="cylinder" rgba="0 0 1 1"/>
                             <body name="door_handle_two" pos="-0.040 0.0 -0.030" quat="0.707 0.0 0.707 0.0 ">
                                 <inertial pos="0 0 0" quat="0 0 0 1" mass="0.250" diaginertia="0.0001828125 0.0001828125 0.00002812"/>
-                                <geom size="0.015 0.06"  type="cylinder" rgba="0 0 1 1"/>
+                                <geom name="door_handle_two_obj" size="0.015 0.06"  type="cylinder" rgba="0 0 1 1"/>
                             </body>
                         </body>
                     </body>
