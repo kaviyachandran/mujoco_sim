@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   mujoco_msgs
   roslib
   controller_manager
+  controller_interface
   tf2_ros
   urdf
 )
@@ -114,3 +115,10 @@ target_link_libraries(${MUJOCO_SIM_NODE}
   tinyxml2
 )
 
+add_executable(impedance_controller src/ee_impedance_controller.cpp)
+add_dependencies(impedance_controller ${${PROJECT_NAME}_EXPORTED_TARGETS}
+                                      ${catkin_EXPORTED_TARGETS}
+)
+target_link_libraries(impedance_controller ${catkin_LIBRARIES}
+                                          ${MUJOCO_SIM_NODE}_lib
+)
