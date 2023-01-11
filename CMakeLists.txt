@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   mujoco_msgs
   roslib
   controller_manager
+  controller_interface
   tf2_ros
   urdf
 )
@@ -113,4 +114,3 @@ target_link_libraries(${MUJOCO_SIM_NODE}
   glfw
   tinyxml2
 )
-
