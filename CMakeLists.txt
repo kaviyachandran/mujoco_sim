@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(mujoco_sim)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   roslib
   controller_manager
   controller_interface
+  hardware_interface
   tf2_ros
   urdf
 )
@@ -113,12 +114,4 @@ target_link_libraries(${MUJOCO_SIM_NODE}
   ${MUJOCO_SOURCE_DIR}/lib/libmujoco.so
   glfw
   tinyxml2
-)
-
-add_executable(impedance_controller src/ee_impedance_controller.cpp)
-add_dependencies(impedance_controller ${${PROJECT_NAME}_EXPORTED_TARGETS}
-                                      ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(impedance_controller ${catkin_LIBRARIES}
-                                          ${MUJOCO_SIM_NODE}_lib
 )

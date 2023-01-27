@@ -797,7 +797,8 @@ void MjSim::controller()
 	{
 		for (const std::string &joint_name : MjSim::joint_names[robot])
 		{
-			if (std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end())
+			if (std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end() 
+			&& std::find(position_controlled_joints.begin(), position_controlled_joints.end(), joint_name) == position_controlled_joints.end())
 			{
 				const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
 				const int dof_id = m->jnt_dofadr[joint_id];
