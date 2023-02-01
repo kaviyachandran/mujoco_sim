@@ -101,4 +101,6 @@ public:
     const std::vector<std::string> position_controlled_joints{"torso_lift_joint","l_upper_arm_roll_joint",
                                                     "l_shoulder_pan_joint","l_shoulder_lift_joint","l_forearm_roll_joint","l_elbow_flex_joint",
                                                     "l_wrist_flex_joint","l_wrist_roll_joint","l_gripper_l_finger_joint"};
+
+    const std::vector<std::string> effort_controlled_joints{"l_gripper_l_finger_joint", "r_gripper_l_finger_joint"};
 };

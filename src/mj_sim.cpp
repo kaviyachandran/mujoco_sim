@@ -792,22 +792,24 @@ bool MjSim::remove_body(const std::vector<std::string> &body_names)
 
 void MjSim::controller()
 {
-	mj_mulM(m, d, tau, u);
-	for (const std::string &robot : MjSim::robots)
-	{
-		for (const std::string &joint_name : MjSim::joint_names[robot])
-		{
-			if (std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end() 
-			&& std::find(position_controlled_joints.begin(), position_controlled_joints.end(), joint_name) == position_controlled_joints.end())
-			{
-				const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
-				const int dof_id = m->jnt_dofadr[joint_id];
-				tau[dof_id] += d->qfrc_bias[dof_id];
-			}
-		}
-	}
-	mju_copy(d->qfrc_applied, tau, m->nv);
-	mju_zero(u, m->nv);
+	// computed torque control
+	// 
+	// mj_mulM(m, d, tau, u);
+	// for (const std::string &robot : MjSim::robots)
+	// {
+	// 	for (const std::string &joint_name : MjSim::joint_names[robot])
+	// 	{
+	// 		if (std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end() 
+	// 		&& std::find(position_controlled_joints.begin(), position_controlled_joints.end(), joint_name) == position_controlled_joints.end())
+	// 		{
+	// 			const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
+	// 			const int dof_id = m->jnt_dofadr[joint_id];
+	// 			tau[dof_id] += d->qfrc_bias[dof_id];
+	// 		}
+	// 	}
+	// }
+	// mju_copy(d->qfrc_applied, tau, m->nv);
+	// mju_zero(u, m->nv);
 }
 
 void MjSim::set_odom_vels()

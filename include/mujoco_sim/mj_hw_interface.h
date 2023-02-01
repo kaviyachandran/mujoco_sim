@@ -44,7 +44,6 @@ public:
 
 private:
     ros::NodeHandle n;
-    MjSim mj_sim;
 
     // Hardware interfaces
     hardware_interface::JointStateInterface joint_state_interface;
@@ -52,7 +51,9 @@ private:
     // hardware_interface::VelocityJointInterface velocity_joint_interface;
     hardware_interface::EffortJointInterface effort_joint_interface;
 
+
     std::vector<std::string> joint_names;
+    MjSim mj_sim;
 
     // States
     std::vector<double> joint_positions;
