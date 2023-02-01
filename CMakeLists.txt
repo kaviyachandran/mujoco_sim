@@ -114,11 +114,3 @@ target_link_libraries(${MUJOCO_SIM_NODE}
   glfw
   tinyxml2
 )
-
-add_executable(impedance_controller src/ee_impedance_controller.cpp)
-add_dependencies(impedance_controller ${${PROJECT_NAME}_EXPORTED_TARGETS}
-                                      ${catkin_EXPORTED_TARGETS}
-)
-target_link_libraries(impedance_controller ${catkin_LIBRARIES}
-                                          ${MUJOCO_SIM_NODE}_lib
-)
