@@ -34,16 +34,16 @@ MjHWInterface::MjHWInterface(const std::string &robot)
 
     for (std::size_t i = 0; i < num_joints; i++)
     {
+        std::cout << "------------------" << joint_names[i] << std::endl;
         hardware_interface::JointStateHandle joint_state_handle(joint_names[i], &joint_positions[i], &joint_velocities[i], &joint_efforts[i]);
         joint_state_interface.registerHandle(joint_state_handle);
 
-        if(joint_names[i].compare(mj_sim.effort_controlled_joints[0]) != 0 || joint_names[i].compare(mj_sim.effort_controlled_joints[1]) != 0)
+        if(joint_names[i].compare(mj_sim.effort_controlled_joints[0]) != 0 && joint_names[i].compare(mj_sim.effort_controlled_joints[1]) != 0)
         {
             hardware_interface::JointHandle joint_handle_position(joint_state_interface.getHandle(joint_names[i]), &joint_positions_command[i]);
             position_joint_interface.registerHandle(joint_handle_position);    
         }
         else{
-            std::cout << "------------------" << joint_names[i] << std::endl;
             hardware_interface::JointHandle joint_handle_effort(joint_state_interface.getHandle(joint_names[i]), &joint_efforts_command[i]);
             effort_joint_interface.registerHandle(joint_handle_effort);
         }
@@ -75,15 +75,15 @@ void MjHWInterface::read()
         joint_velocities[i] = d->qvel[dof_id];
         joint_efforts[i] = d->qfrc_inverse[dof_id];
     }
-
-    const int sensorId = mj_name2id(m, mjtObj::mjOBJ_JOINT, "force_ll");
-    int adr = m->sensor_adr[sensorId];
-    int dim = m->sensor_dim[sensorId];
-    mjtNum sensor_data[dim];
-    mju_copy(sensor_data, &d->sensordata[adr], dim);
-    std::cout << "sensor data " << d->sensordata[0] << " " << d->sensordata[1] << " "
-    << d->sensordata[2] << " " << d->sensordata[3] << " " << d->sensordata[4] << " "
-    << d->sensordata[5] << std::endl;
+    // read force sensor data
+    // const int sensorId = mj_name2id(m, mjtObj::mjOBJ_JOINT, "force_ll");
+    // int adr = m->sensor_adr[sensorId];
+    // int dim = m->sensor_dim[sensorId];
+    // mjtNum sensor_data[dim];
+    // mju_copy(sensor_data, &d->sensordata[adr], dim);
+    // std::cout << "sensor data " << d->sensordata[0] << " " << d->sensordata[1] << " "
+    // << d->sensordata[2] << " " << d->sensordata[3] << " " << d->sensordata[4] << " "
+    // << d->sensordata[5] << std::endl;
 }
 
 void MjHWInterface::write()

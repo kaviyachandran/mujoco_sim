@@ -192,7 +192,7 @@ int main(int argc, char **argv)
     glfwSetKeyCallback(mj_visual.window, keyboard);
 #endif
 
-    mjcb_control = controller;
+    //mjcb_control = controller;
 
     std::thread ros_thread1(&MjRos::publish_tf, mj_ros);
     std::thread ros_thread2(&MjRos::publish_marker_array, mj_ros);
