@@ -1,5 +1,5 @@
 <mujoco model="pr2">
-    <compiler angle="radian" autolimits="true" convexhull="true"/>
+    <compiler angle="radian" autolimits="true" convexhull="true" inertiafromgeom="true"/>
     <option collision="predefined"/>
     <size/>
     <asset>
@@ -35,7 +35,7 @@
         <pair geom1="l_gripper_l_finger_tip" geom2="door_handle_two_obj"/>
         <pair geom1="l_gripper_r_finger_tip" geom2="door_handle_two_obj"/>
         <pair geom1="l_gripper_l_finger_tip" geom2="door_obj"/>
-        <pair geom1="l_gripper_r_finger_tip" geom2="door_obj"/>
+        <pair geom1="l_gripper_r_finger_tip" geom2="door_obj"/> 
     </contact>
 
     <default>
