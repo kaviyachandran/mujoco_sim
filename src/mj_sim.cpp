@@ -41,6 +41,8 @@ mjtNum *MjSim::tau = NULL;
 
 mjtNum MjSim::sim_start;
 
+mjtNum *MjSim::q_desired = NULL;
+
 std::map<std::string, std::map<std::string, bool>> MjSim::add_odom_joints;
 
 std::vector<std::string> MjSim::robots;
@@ -585,6 +587,8 @@ static void init_malloc()
 	mju_zero(MjSim::tau, m->nv);
 	MjSim::u = (mjtNum *)mju_malloc(m->nv * sizeof(mjtNum *));
 	mju_zero(MjSim::u, m->nv);
+	MjSim::q_desired = (mjtNum *)mju_malloc(m->nv * sizeof(mjtNum *));
+	mju_zero(MjSim::q_desired, m->nv);															\
 }
 
 static void modify_xml(const char *xml_path, const std::vector<std::string> &remove_body_names = {""})
@@ -792,24 +796,42 @@ bool MjSim::remove_body(const std::vector<std::string> &body_names)
 
 void MjSim::controller()
 {
-	// computed torque control
-	// 
-	// mj_mulM(m, d, tau, u);
-	// for (const std::string &robot : MjSim::robots)
-	// {
-	// 	for (const std::string &joint_name : MjSim::joint_names[robot])
-	// 	{
-	// 		if (std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end() 
-	// 		&& std::find(position_controlled_joints.begin(), position_controlled_joints.end(), joint_name) == position_controlled_joints.end())
-	// 		{
-	// 			const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
-	// 			const int dof_id = m->jnt_dofadr[joint_id];
-	// 			tau[dof_id] += d->qfrc_bias[dof_id];
-	// 		}
-	// 	}
-	// }
-	// mju_copy(d->qfrc_applied, tau, m->nv);
-	// mju_zero(u, m->nv);
+	// computed torque control. TODO: Needs to be tweaked
+	//
+	//if(q_desired != nullptr)
+	{
+		for (const std::string &robot : MjSim::robots)
+		{
+			for (const std::string &joint_name : MjSim::joint_names[robot])
+			{
+				if (std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end())
+				{	
+					const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
+					const int dof_id = m->jnt_dofadr[joint_id];
+					//std::cout << "upp date " << q_desired.at(dof_id) << std::endl;
+					u[dof_id] = q_desired[dof_id] != 0 ? 200*(q_desired[dof_id]-d->qpos[dof_id]) - 5 *(d->qvel[dof_id]) : -5*(d->qvel[dof_id]);
+					std::cout << "uuuuuuuuuuuuuuuuuuuuuuuu " << u[dof_id] << std::endl;
+				}
+			}
+		}
+	}
+	
+	mj_mulM(m, d, tau, u);
+	for (const std::string &robot : MjSim::robots)
+	{
+		for (const std::string &joint_name : MjSim::joint_names[robot])
+		{
+			if (std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end())
+			{
+				const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
+				const int dof_id = m->jnt_dofadr[joint_id];
+				tau[dof_id] += d->qfrc_bias[dof_id];
+			}
+		}
+	}
+	mju_copy(d->qfrc_applied, tau, m->nv);
+	mju_zero(u, m->nv);
+
 }
 
 void MjSim::set_odom_vels()

@@ -34,7 +34,6 @@ public:
 
     ~MjSim();
 
-public:
     /**
      * @brief Initialize the simulation
      *
@@ -59,7 +58,6 @@ public:
      */
     void set_odom_vels();
 
-public:
     /**
      * @brief Spawn new data from file
      *
@@ -75,7 +73,6 @@ public:
      */
     static bool remove_body(const std::vector<std::string> &body_names);
 
-public:
     static double max_time_step;
 
     static std::map<std::string, std::vector<std::string>> joint_names;
@@ -103,4 +100,6 @@ public:
                                                     "l_wrist_flex_joint","l_wrist_roll_joint","l_gripper_l_finger_joint"};
 
     const std::vector<std::string> effort_controlled_joints{"l_gripper_l_finger_joint", "r_gripper_l_finger_joint"};
+
+    static mjtNum *q_desired;
 };
