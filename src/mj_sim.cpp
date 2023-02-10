@@ -804,13 +804,14 @@ void MjSim::controller()
 		{
 			for (const std::string &joint_name : MjSim::joint_names[robot])
 			{
-				if (std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end())
+				if ((std::find(MjSim::joint_ignores.begin(), MjSim::joint_ignores.end(), joint_name) == MjSim::joint_ignores.end()) && 
+					(joint_name.compare(effort_controlled_joints[0]) != 0 && joint_name.compare(effort_controlled_joints[1]) != 0))
 				{	
 					const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
 					const int dof_id = m->jnt_dofadr[joint_id];
 					//std::cout << "upp date " << q_desired.at(dof_id) << std::endl;
 					u[dof_id] = q_desired[dof_id] != 0 ? 200*(q_desired[dof_id]-d->qpos[dof_id]) - 5 *(d->qvel[dof_id]) : -5*(d->qvel[dof_id]);
-					std::cout << "uuuuuuuuuuuuuuuuuuuuuuuu " << u[dof_id] << std::endl;
+					// std::cout << "uuuuuuuuuuuuuuuuuuuuuuuu " << u[dof_id] << std::endl;
 				}
 			}
 		}
