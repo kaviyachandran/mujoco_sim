@@ -114,7 +114,7 @@ void MjRos::init()
     }
     if (!ros::param::get("~spawn_and_destroy_objects_rate", spawn_and_destroy_objects_rate))
     {
-        spawn_and_destroy_objects_rate = 600.0;
+        spawn_and_destroy_objects_rate = 100.0;
     }
     if (!ros::param::get("~root_frame_id", root_frame_id))
     {
@@ -214,7 +214,8 @@ void MjRos::init()
 
     object_states_pub = n.advertise<mujoco_msgs::ObjectStateArray>("/mujoco/object_states", 0);
     world_joint_states_pub = n.advertise<sensor_msgs::JointState>("/mujoco/joint_states", 0);
-    sensors_pub = n.advertise<geometry_msgs::Vector3Stamped>("/mujoco/sensors_3D", 0);
+    // sensors_pub = n.advertise<geometry_msgs::Vector3Stamped>("/mujoco/sensors_3D", 0);
+    ft_sensor_pub = n.advertise<geometry_msgs::WrenchStamped>("/pr2/cartesian_compliance_controller/ft_sensor_wrench", 10);
 
     reset_robot();
 }
@@ -1072,37 +1073,69 @@ void MjRos::publish_base_pose()
     }
 }
 
-void MjRos::publish_sensor_data()
+// void MjRos::publish_sensor_data()
+// {
+//     if (pub_sensor_data_rate < 1E-9)
+//     {
+//         return;
+//     }
+
+//     ros::Rate loop_rate(pub_sensor_data_rate);
+
+//     std_msgs::Header header;
+//     geometry_msgs::Vector3Stamped sensor_data;
+//     while (ros::ok())
+//     {
+//         // Set header
+//         header.stamp = ros::Time::now();
+
+//         for (const std::pair<size_t, std::string> &sensor : MjSim::sensors)
+//         {
+//             header.seq += 1;
+//             header.frame_id = sensor.second;
+
+//             sensor_data.header = header;
+//             const int sensor_adr = m->sensor_adr[sensor.first];
+//             sensor_data.vector.x = d->sensordata[sensor_adr];
+//             sensor_data.vector.y = d->sensordata[sensor_adr + 1];
+//             sensor_data.vector.z = d->sensordata[sensor_adr + 2];
+
+//             // std::cout << "data " << sensor.second << " " << d->sensordata[sensor_adr] << std::endl;
+
+//             sensors_pub.publish(sensor_data);
+//         }
+
+//         ros::spinOnce();
+//         loop_rate.sleep();
+//     }
+// }
+
+void MjRos::publish_ft_sensor_data()
 {
-    if (pub_sensor_data_rate < 1E-9)
+    ros::Rate loop_rate(60);
+
+    while(ros::ok())
     {
-        return;
-    }
+        // read force sensor data
+        const int sensorId = mj_name2id(m, mjtObj::mjOBJ_JOINT, "force_ll");
+        int adr = m->sensor_adr[sensorId];
+        int dim = m->sensor_dim[sensorId];
+        mjtNum sensor_data[dim];
+        mju_copy(sensor_data, &d->sensordata[adr], dim);
+        // std::cout << "sensor data " << d->sensordata[0] << " " << d->sensordata[1] << " "
+        // << d->sensordata[2] << " " << d->sensordata[3] << " " << d->sensordata[4] << " "
+        // << d->sensordata[5] << std::endl;
+        geometry_msgs::WrenchStamped ft_data;
+        ft_data.header.stamp = ros::Time::now();
+        ft_data.wrench.force.x = d->sensordata[0];
+        ft_data.wrench.force.y = d->sensordata[1];
+        ft_data.wrench.force.z = d->sensordata[2];
 
-    ros::Rate loop_rate(pub_sensor_data_rate);
+        ft_data.wrench.torque.x = d->sensordata[3];
+        ft_data.wrench.torque.y = d->sensordata[4];
+        ft_data.wrench.torque.z = d->sensordata[5];
 
-    std_msgs::Header header;
-    geometry_msgs::Vector3Stamped sensor_data;
-    while (ros::ok())
-    {
-        // Set header
-        header.stamp = ros::Time::now();
-
-        for (const std::pair<size_t, std::string> &sensor : MjSim::sensors)
-        {
-            header.seq += 1;
-            header.frame_id = sensor.second;
-
-            sensor_data.header = header;
-            const int sensor_adr = m->sensor_adr[sensor.first];
-            sensor_data.vector.x = d->sensordata[sensor_adr];
-            sensor_data.vector.y = d->sensordata[sensor_adr + 1];
-            sensor_data.vector.z = d->sensordata[sensor_adr + 2];
-
-            // std::cout << "data " << sensor.second << " " << d->sensordata[sensor_adr] << std::endl;
-
-            sensors_pub.publish(sensor_data);
-        }
+        ft_sensor_pub.publish(ft_data);
 
         ros::spinOnce();
         loop_rate.sleep();

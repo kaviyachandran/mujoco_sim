@@ -75,15 +75,6 @@ void MjHWInterface::read()
         joint_velocities[i] = d->qvel[dof_id];
         joint_efforts[i] = d->qfrc_inverse[dof_id];
     }
-    // read force sensor data
-    // const int sensorId = mj_name2id(m, mjtObj::mjOBJ_JOINT, "force_ll");
-    // int adr = m->sensor_adr[sensorId];
-    // int dim = m->sensor_dim[sensorId];
-    // mjtNum sensor_data[dim];
-    // mju_copy(sensor_data, &d->sensordata[adr], dim);
-    // std::cout << "sensor data " << d->sensordata[0] << " " << d->sensordata[1] << " "
-    // << d->sensordata[2] << " " << d->sensordata[3] << " " << d->sensordata[4] << " "
-    // << d->sensordata[5] << std::endl;
 }
 
 void MjHWInterface::write()

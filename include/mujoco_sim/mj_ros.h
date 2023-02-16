@@ -32,6 +32,8 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Vector3Stamped.h>
+#include <geometry_msgs/WrenchStamped.h>
+#include <geometry_msgs/Vector3.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/JointState.h>
 #include <std_srvs/Trigger.h>
@@ -104,7 +106,13 @@ public:
      * @brief Publish sensor data
      *
      */
-    void publish_sensor_data();
+    //void publish_sensor_data();
+
+    /**
+    * @brief Publish force and torque sensor data
+    *
+    */
+    void publish_ft_sensor_data();
 
     /**
      * @brief Run spawn and destroy objects
@@ -246,6 +254,8 @@ private:
     ros::Publisher world_joint_states_pub;
 
     ros::Publisher sensors_pub;
+
+    ros::Publisher ft_sensor_pub;
 
     tf2_ros::TransformBroadcaster br;
 

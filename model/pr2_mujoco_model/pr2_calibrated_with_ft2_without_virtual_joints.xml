@@ -238,10 +238,14 @@
                                         <geom size="0.0225 0.0178" pos="0.0476 0 0" quat="0.579228 -0.40558 -0.579228 0.40558" type="cylinder" rgba="0.7 0.7 0.7 1"/>
                                         <geom pos="0.0356 0 0" type="mesh" rgba="0.8 0 0 1" mesh="gripper_palm"/>
                                         <geom size="0.0005 0.0005 0.0005" pos="0.0356 0 0" type="box"/>
-                                        <body name="l_wrist_sensor_body" pos="0 0 0.">
-                                            <inertial pos="0 0 0" mass="0.001" diaginertia="0 0 0" />
-                                            <geom type="box" pos="0 0 0" size="0.01 0.01 0.01" rgba="0 1 0 1"/>
-                                            <site name="l_wrist_sensor" pos="0 0 0" rgba="1 0 0 0" size="0.05 0.05 0.05" type="box"/>
+                                        <body name="l_force_torque_adapter_link" pos="0 0 0" quat="0.707109 0 -0.7071045 0">
+                                            <body name="l_force_torque_link" pos="0 0 0" quat="0.8191521 0 0 0.5735764">
+                                                <site name="l_wrist_sensor" pos="0 0 0" rgba="1 0 0 0" type="cylinder" size="0.0225 0.0178"/>
+                                                <!-- <body name="l_gripper_palm_link" pos="0 0 0" quat="0.5792299 0.4055784 0.5792262 -0.4055809">
+                                                    <geom type="mesh" rgba="0.8 0 0 1" mesh="gripper_palm"/>
+                                                    <inertial mass="0.58007" diaginertia="0.00035223921 0.00067741312 0.00086563316"/>
+                                                </body> -->
+                                            </body>
                                         </body>
                                         <body name="l_gripper_motor_slider_link" pos="0.20388 0 0">
                                             <inertial pos="0 0 0" mass="0.01" diaginertia="0.001 0.001 0.001"/>
