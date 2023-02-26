@@ -1,8 +1,8 @@
 <mujoco model="tabletop">
     <compiler angle="radian" meshdir="/home/kaviya/giskard_ws/src/mujoco_sim/model/world/meshes" inertiafromgeom="true"/>
     <!-- <size njmax="500" nconmax="100" /> -->
-    <option timestep="0.01" integrator="RK4" solver="CG" tolerance="1e-6" >
-        <flag contact="enable" />
+    <option gravity="0 0 -9.81" timestep="0.01" integrator="RK4" solver="CG" tolerance="1e-6" >
+        <flag contact="enable"  multiccd="enable" />
     </option>
 
     <!-- <size nconmax="500" njmax="5000" nstack="5000000"/> -->
@@ -19,38 +19,50 @@
         <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4" />
         <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" />
     </asset>
-    <!-- <contact>
-        <pair geom1="top" geom2="box1"/>
-    </contact> -->
+    <contact>
+        <pair geom1="top" geom2="box_crazy"/>
+    </contact>
 
     <default>
-        <geom friction="1 0.1 0.1" condim="3"/>
+        <geom  solref=".001 1" friction="1 0.1 0.1" condim="3"/>
+        <default class="visual">
+            <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        </default>
+        <default class="collision">
+            <geom group="3"/>
+        </default>
     </default>
 
     <worldbody>
         <light pos="0 0 1"/>
         <light pos="0.3 0 1.5" dir="0 0 -1" directional="true"/>
         <geom name="floor" pos="0 0 -0.01" size="0 0 .05" type="plane" material="grid" condim="3" />
-        <!-- <body name="box_main" pos="1.040 0.3 0.85" quat="0.707 0 0 0.707107">
+        <body name="box_body" pos="1.040 0.3 0.80" quat="0.707 0 0 0.707107">
+            <!-- <joint type="slide" axis="1 0 0" range="0 0.3"/> -->
+            <geom name="box_crazy" size="0.025 0.025 0.050" rgba="0.43 0.1647 0.1647 1" type="box" condim="6"/>
+            <joint name="box_joint" type="free" stiffness="0" damping="0.5"/>
+            <inertial pos="0 0 0" quat="0 0 0 1" mass="2" diaginertia="0.001667 0.001667 0.001667"/>
+        </body>
+      <!--   <body name="cylinder_main" pos="1.040 0.3 0.85" quat="0.707 0 0 0.707107">
             <inertial pos="0 0 0" quat="0 0 0 1" mass="1" diaginertia="0.001667 0.001667 0.001667"/>
             <freejoint/>
-            <geom name="box1" size="0.025 0.025 0.050" rgba="0.43 0.1647 0.1647 1" type="box"/>
+            <geom name="bottle" type="cylinder" size="0.03 0.07" rgba="0.43 0.1647 0.1647 1" />
         </body> -->
         <body name="jokkmokk_table_main" pos="1.40 0.110 0.350" quat="0.707 0 0 0.70710">
                 <inertial pos="0 0 0" quat="0 0 0 1" mass="2" diaginertia="1 1 1" />
                 <geom name="top" type="plane" pos="0 0 0.4" size="1 0.4 .05" group="3"/>
                 <geom name="table0" type="mesh" mesh="JokkmokkTable0" />
-                <geom type="mesh" mesh="JokkmokkTable1" />
-                <geom type="mesh" mesh="JokkmokkTable2" />
-                <geom type="mesh" mesh="JokkmokkTable3" />
-                <geom type="mesh" mesh="JokkmokkTable4" />
-                <geom type="mesh" mesh="JokkmokkTable5" />
-                <geom type="mesh" mesh="JokkmokkTable6" />
-                <geom type="mesh" mesh="JokkmokkTable7" />
-                <geom type="mesh" mesh="JokkmokkTable8" />
+                <geom class="visual" mesh="JokkmokkTable1" />
+                <geom class="visual"  mesh="JokkmokkTable2" />
+                <geom class="visual"  mesh="JokkmokkTable3" />
+                <geom class="visual"  mesh="JokkmokkTable4" />
+                <geom class="visual"  mesh="JokkmokkTable5" />
+                <geom class="visual"  mesh="JokkmokkTable6" />
+                <geom class="visual"  mesh="JokkmokkTable7" />
+                <geom class="visual" mesh="JokkmokkTable8" />
         </body>
-    </worldbody>
-    <worldbody>
+    <!-- </worldbody>
+    <worldbody> -->
         <body name="door_main_footprint" pos="1.20 -0.210 0.745" quat="0.707388 0 0 -0.706825">
             <body name="door_container">
                 <body name="wall1">
@@ -91,5 +103,5 @@
             </body>
         </body>
     </worldbody>
-    <!-- <include file="../pr2_mujoco_model/pr2_calibrated_with_ft2_without_virtual_joints.xml"/> -->
+    <include file="../robot.xml"/> -->
 </mujoco>
