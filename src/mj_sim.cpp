@@ -810,7 +810,7 @@ void MjSim::controller()
 					const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
 					const int dof_id = m->jnt_dofadr[joint_id];
 					//std::cout << "upp date " << q_desired.at(dof_id) << std::endl;
-					u[dof_id] = q_desired[dof_id] != 0 ? 200*(q_desired[dof_id]-d->qpos[dof_id]) - 5 *(d->qvel[dof_id]) : -5*(d->qvel[dof_id]);
+					u[dof_id] = q_desired[dof_id] != 0 ? 200*(q_desired[dof_id]-d->qpos[dof_id]) - 20 *(d->qvel[dof_id]) : -20*(d->qvel[dof_id]);
 					// std::cout << "uuuuuuuuuuuuuuuuuuuuuuuu " << u[dof_id] << std::endl;
 				}
 			}
