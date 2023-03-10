@@ -1,7 +1,7 @@
 <mujoco model="tabletop">
     <compiler angle="radian" meshdir="/home/kaviya/giskard_ws/src/mujoco_sim/model/world/meshes" inertiafromgeom="true"/>
     <!-- <size njmax="500" nconmax="100" /> -->
-    <option gravity="0 0 -9.81" timestep="0.01" integrator="RK4" solver="CG" tolerance="1e-6" >
+    <option gravity="0 0 -9.81" timestep="0.001" integrator="RK4" solver="CG" tolerance="1e-6" >
         <flag contact="enable"  multiccd="enable" />
     </option>
 
@@ -20,7 +20,7 @@
         <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" />
     </asset>
     <contact>
-        <pair geom1="top" geom2="box_crazy"/>
+        <pair geom1="top" geom2="stone_box"/>
     </contact>
 
     <default>
@@ -34,15 +34,23 @@
     </default>
 
     <worldbody>
+        <body name="stone"  pos="1.040 0.3 0.80" quat="0.707 0 0 0.707107">
+            <freejoint/>
+            <geom name="stone_box" type="box" size="0.025 0.025 0.050" rgba="0.43 0.1647 0.1647 1" condim="6" />
+            <inertial pos="0 0 0" mass="0.2024" diaginertia="4.369e-5 4.028e-5 1.407e-5"/>
+        </body>
+    </worldbody>
+
+
+    <worldbody>
         <light pos="0 0 1"/>
         <light pos="0.3 0 1.5" dir="0 0 -1" directional="true"/>
         <geom name="floor" pos="0 0 -0.01" size="0 0 .05" type="plane" material="grid" condim="3" />
-        <body name="box_body" pos="1.040 0.3 0.80" quat="0.707 0 0 0.707107">
-            <!-- <joint type="slide" axis="1 0 0" range="0 0.3"/> -->
+        <!-- <body name="box_body" pos="1.040 0.3 0.80" quat="0.707 0 0 0.707107">
             <geom name="box_crazy" size="0.025 0.025 0.050" rgba="0.43 0.1647 0.1647 1" type="box" condim="6"/>
             <joint name="box_joint" type="free" stiffness="0" damping="0.5"/>
             <inertial pos="0 0 0" quat="0 0 0 1" mass="2" diaginertia="0.001667 0.001667 0.001667"/>
-        </body>
+        </body> -->
       <!--   <body name="cylinder_main" pos="1.040 0.3 0.85" quat="0.707 0 0 0.707107">
             <inertial pos="0 0 0" quat="0 0 0 1" mass="1" diaginertia="0.001667 0.001667 0.001667"/>
             <freejoint/>
@@ -61,8 +69,8 @@
                 <geom class="visual"  mesh="JokkmokkTable7" />
                 <geom class="visual" mesh="JokkmokkTable8" />
         </body>
-    <!-- </worldbody>
-    <worldbody> -->
+    </worldbody>
+    <worldbody>
         <body name="door_main_footprint" pos="1.20 -0.210 0.745" quat="0.707388 0 0 -0.706825">
             <body name="door_container">
                 <body name="wall1">
@@ -103,5 +111,5 @@
             </body>
         </body>
     </worldbody>
-    <include file="../robot.xml"/> -->
+    <include file="../pr2_mujoco_model/pr2_calibrated_with_ft2_without_virtual_joints.xml"/>
 </mujoco>

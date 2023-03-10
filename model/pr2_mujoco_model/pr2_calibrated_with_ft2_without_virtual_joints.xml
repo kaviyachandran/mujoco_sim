@@ -1,6 +1,6 @@
 <mujoco model="pr2">
     <compiler angle="radian" autolimits="true" convexhull="true" inertiafromgeom="true"/>
-    <option collision="predefined"/>
+    <option collision="all" timestep="0.001" gravity="0 0 -9.81" cone="elliptic" />
     <size/>
     <asset>
         <mesh name="base_L" file="/home/kaviya/giskard_ws/src/mujoco_sim/model/pr2_mujoco_model/pr2_calibrated_with_ft2_without_virtual_joints/meshes/base_L.stl"/>
@@ -30,8 +30,6 @@
         <pair geom1="base" geom2="l_forearm"/>
         <exclude body1="r_gripper_l_finger_tip_link" body2="r_gripper_r_finger_tip_link"/>
         <exclude body1="l_gripper_l_finger_tip_link" body2="l_gripper_r_finger_tip_link"/>
-        <exclude body1="bsae_link" body2="r_forearm_roll_link"/>
-        <exclude body1="bsae_link" body2="l_forearm_roll_link"/>
         <pair geom1="l_gripper_l_finger_tip" geom2="door_handle_two_obj"/>
         <pair geom1="l_gripper_r_finger_tip" geom2="door_handle_two_obj"/>
         <pair geom1="l_gripper_l_finger_tip" geom2="door_obj"/>
@@ -40,10 +38,10 @@
     </contact>
 
     <default>
-        <joint damping="1" armature=".05"/>
+        <joint damping="0.005" armature=".05" solimplimit="0.9999 0.9999 0.001 1"/>
         <geom solref=".001 1" friction="1 0.1 0.1" />
         <default class="gripper">
-            <joint damping="0.005" armature=".005"/>
+            <joint damping="0.05" armature=".005"/>
         </default>
     </default>
 
