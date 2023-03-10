@@ -181,7 +181,8 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "mujoco_sim");
     ros::NodeHandle n;
-
+    
+    mj_sim.add_bodies_to_exclude_collision();
     mj_sim.init();
 
     MjRos mj_ros;

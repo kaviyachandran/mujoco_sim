@@ -55,6 +55,20 @@ MjSim::~MjSim()
 	boost::filesystem::remove_all(tmp_model_path.parent_path());
 }
 
+void MjSim::add_bodies_to_exclude_collision() const
+{
+	tinyxml2::XMLDocument current_pr2_model;
+	std::string xml_file_path;
+	std::vector<std::string> controlled_joints;
+	c
+	if(ros::param::get("~robot", xml_file_path))
+	{
+		std::cout << "file path " <<  xml_file_path << std::endl;
+		current_pr2_model.LoadFile(xml_file_path);
+		
+	}
+}
+
 /**
  * @brief Set tmp_model_name, world_path and odom_joints
  */

@@ -58,6 +58,13 @@ public:
      */
     void set_odom_vels();
 
+      /**
+     * @brief Add bodies that are attached to joints that are not controlled to 
+     * be excluded from collision
+     *
+     */
+    void add_bodies_to_exclude_collision() const;
+
     /**
      * @brief Spawn new data from file
      *
