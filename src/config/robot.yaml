@@ -45,7 +45,7 @@ add_odom_joints: true # true for mobile robots, false for fixed-based robots
 #     ang_odom_y_joint: false
 #     ang_odom_z_joint: true
 
-max_time_step: 0.009 # Maximal time step (bigger value <=> faster but more unstable)
+max_time_step: 0.001 # Maximal time step (bigger value <=> faster but more unstable)
 
 pub_object_marker_array_rate: 0.0 # The frequency to publish the marker array of simulating objects
 
