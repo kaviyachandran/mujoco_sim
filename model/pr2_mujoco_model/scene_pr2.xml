@@ -1,5 +1,5 @@
 <mujoco>
-    <include file="pr2_calibrated_with_ft2_without_virtual_joints.xml"/>
+    <!-- <include file="pr2_calibrated_with_ft2_without_virtual_joints.xml"/> -->
     <visual>
         <rgba haze="0.15 0.25 0.35 1"/>
         <quality shadowsize="8192"/>
