@@ -1,10 +1,56 @@
 <launch>
 
-    <arg name="robot" default="$(find mujoco_sim)/model/test/bowl.xml" />
+  <arg name="namespace" default="pr2" />
+  <arg name="gui" default="false" />
+
+  <!-- <include file="$(find iai_pr2_description)/launch/upload_pr2_calibrated_with_ft2.launch" /> -->
+  <param name="robot_description" textfile="$(find iai_pr2_description)/robots/pr2_calibrated_with_ft2.xml"/>
+
+  <node pkg="iai_naive_kinematics_sim" type="map_odom_transform_publisher.py" name="map_odom_transform_publisher" output="screen">
+    <param name="parent_frame" value="map" />
+    <param name="child_frame" value="odom_combined" />
+  </node>
+
+  <param name="door_description" command="$(find xacro)/xacro $(find stack_blocks)/model/table_top_env.xacro" />
+
+
+  <node if="$(arg gui)" name="door_joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
+    <remap from="robot_description" to="door_description" />
+    <remap from="/joint_states" to="/mujoco/joint_states" />
+  </node>
+
+
+  <node unless="$(arg gui)" name="door_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <remap from="robot_description" to="door_description" />
+    <remap from="/joint_states" to="/mujoco/joint_states" />
+  </node>
+
+  <node name="door_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <remap from="robot_description" to="door_description" />
+    <remap from="/joint_states" to="/mujoco/joint_states" />
+    <param name="publish_frequency" value="200" />
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="world_map" args="0.0 0.0 0 0.0 0 0 map world 200"/>
+    <!-- <arg name="robot" default="$(find mujoco_sim)/model/test/bowl.xml" />
     <arg name="use_urdf" default="false" />
     <arg name="world" default="$(find mujoco_sim)/model/world/empty.xml" />
-    <arg name="config" default="$(find mujoco_sim)/src/config/robot.yaml" />
+    <arg name="config" default="$(find mujoco_sim)/src/config/robot.yaml" /> -->
     <arg name="disable_parent_child_collision_level" default="1" />
+
+    <arg name="robot" value="$(find mujoco_sim)/model/pr2_mujoco_model/pr2_inertia_edited.xml" />
+    <arg name="use_urdf" value="false" />
+    <arg name="config" default="$(find iai_pr2_sim)/config/mujoco_config.yaml" />
+    <arg name="world" value="$(find mujoco_sim)/model/pr2_mujoco_model/scene_pr2.xml" />
+    
+    <rosparam command="load" file="$(find iai_pr2_sim)/config/ros_control_sim_mujoco.yaml" />
+    <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="spawn
+      joint_state_controller
+      r_body_controller
+      l_body_controller
+      r_gripper_l_finger_controller
+      l_gripper_l_finger_controller"
+    />
 
     <group if="$(arg use_urdf)">
         <node name="mujoco_compile" pkg="mujoco_sim" type="mujoco_compile_node" output="screen" args="$(arg robot) $(arg disable_parent_child_collision_level)" />
