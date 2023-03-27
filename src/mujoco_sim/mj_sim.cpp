@@ -35,7 +35,11 @@ std::set<std::string> MjSim::robot_link_names;
 
 mjtNum *MjSim::dq = NULL;
 
-mjtNum *MjSim::ddq = NULL;
+// mjtNum *MjSim::ddq = NULL;
+
+mjtNum *MjSim::q_desired = NULL;
+
+mjtNum *MjSim::u = NULL;
 
 mjtNum *MjSim::tau = NULL;
 
@@ -534,8 +538,8 @@ static void init_malloc()
 {
 	MjSim::tau = (mjtNum *)mju_malloc(m->nv * sizeof(mjtNum *));
 	mju_zero(MjSim::tau, m->nv);
-	MjSim::ddq = (mjtNum *)mju_malloc(m->nv * sizeof(mjtNum *));
-	mju_zero(MjSim::ddq, m->nv);
+	MjSim::u = (mjtNum *)mju_malloc(m->nv * sizeof(mjtNum *));
+	mju_zero(MjSim::u, m->nv);
 	MjSim::dq = (mjtNum *)mju_malloc(m->nv * sizeof(mjtNum *));
 	mju_zero(MjSim::dq, m->nv);
 }
@@ -898,8 +902,21 @@ bool MjSim::remove_body(const std::set<std::string> &body_names)
 }
 
 void MjSim::controller()
-{
-	mj_mulM(m, d, tau, ddq);
+{	
+	for (const std::string &joint_name : MjSim::controlled_joints)
+	{
+		if ( joint_name.compare(effort_controlled_joints[0]) != 0 && joint_name.compare(effort_controlled_joints[1]) != 0)
+		{	
+			const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
+			const int dof_id = m->jnt_dofadr[joint_id];
+			//std::cout << "upp date " << q_desired.at(dof_id) << std::endl;
+			u[dof_id] = q_desired[dof_id] != 0 ? 200*(q_desired[dof_id]-d->qpos[dof_id]) - 20 *(d->qvel[dof_id]) : -20*(d->qvel[dof_id]);
+			// std::cout << "uuuuuuuuuuuuuuuuuuuuuuuu " << u[dof_id] << std::endl;
+		}
+	}
+	
+	mj_mulM(m, d, tau, u);
+
 	for (const std::string &joint_name : MjSim::controlled_joints)
 	{
 		const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_name.c_str());
@@ -917,7 +934,7 @@ void MjSim::controller()
 		}
 	}
 
-	mju_zero(ddq, m->nv);
+	mju_zero(u, m->nv);
 	mju_zero(dq, m->nv);
 }
 

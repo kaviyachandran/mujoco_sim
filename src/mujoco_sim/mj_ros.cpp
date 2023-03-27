@@ -75,7 +75,7 @@ static std::map<mjtObj, std::map<std::string, std::string>> name_map;
 
 static std::map<mjtObj, int> unique_index = {{mjtObj::mjOBJ_MESH, 0}, {mjtObj::mjOBJ_BODY, 0}, {mjtObj::mjOBJ_JOINT, 0}, {mjtObj::mjOBJ_GEOM, 0}};
 
-static bool init_urdf(urdf::Model &urdf_model, const ros::NodeHandle &n, const char *robot_description = "robot_description")
+static bool init_urdf(urdf::Model &urdf_model, const ros::NodeHandle &n, const char *robot_description = "/robot_description")
 {
     std::string robot_description_string;
     if (ros::param::get(robot_description, robot_description_string))
@@ -464,7 +464,7 @@ void MjRos::init()
     }
     if (!ros::param::get("~spawn_and_destroy_objects_rate", spawn_and_destroy_objects_rate))
     {
-        spawn_and_destroy_objects_rate = 600.0;
+        spawn_and_destroy_objects_rate = 60.0;
     }
     if (!ros::param::get("~root_frame_id", root_frame_id))
     {
@@ -544,6 +544,10 @@ void MjRos::init()
     destroy_objects_server = n.advertiseService("/mujoco/destroy_objects", &MjRos::destroy_objects_service, this);
     ROS_INFO("Started [%s] service.", destroy_objects_server.getService().c_str());
 
+    reset_object_server = n.advertiseService("/mujoco/reset_object_joint_state", &MjRos::reset_object_service, this);
+    ROS_INFO("Started [%s] service.", reset_object_server.getService().c_str());
+
+
     if (!ros::param::get("~joint_inits", joint_inits))
     {
         ROS_WARN("joint_inits not found, will set to default value (0)");
@@ -559,7 +563,8 @@ void MjRos::init()
     joint_states_pub[EObjectType::Robot] = n.advertise<sensor_msgs::JointState>("/mujoco/robot_joint_states", 0);
     joint_states_pub[EObjectType::World] = n.advertise<sensor_msgs::JointState>("/mujoco/world_joint_states", 0);
     joint_states_pub[EObjectType::SpawnedObject] = n.advertise<sensor_msgs::JointState>("/mujoco/object_joint_states", 0);
-    sensors_pub = n.advertise<geometry_msgs::Vector3Stamped>("/mujoco/sensors_3D", 0);
+    //sensors_pub = n.advertise<geometry_msgs::Vector3Stamped>("/mujoco/sensors_3D", 0);
+    ft_sensor_pub = n.advertise<geometry_msgs::WrenchStamped>("/pr2/cartesian_compliance_controller/ft_sensor_wrench", 10);
 
     reset_robot();
 }
@@ -836,6 +841,23 @@ bool MjRos::reset_robot_service(std_srvs::TriggerRequest &req, std_srvs::Trigger
     }
     return true;
 }
+
+bool MjRos::reset_object_service(mujoco_msgs::ResetObjectRequest &req, mujoco_msgs::ResetObjectResponse &res)
+{   
+    try{
+        int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, req.object_joint_name.c_str());
+        std::cout << "joint id " << joint_id << "val " << d->qpos[m->jnt_qposadr[joint_id]] << std::endl;
+        d->qpos[m->jnt_qposadr[joint_id]] = req.joint_value;
+        res.status = true;
+        return true;
+    }
+    catch (std::exception& e){
+        ROS_WARN("Error in reset object service");
+        res.status = false;
+        return false;
+    }
+}
+
 
 bool MjRos::spawn_objects_service(mujoco_msgs::SpawnObjectRequest &req, mujoco_msgs::SpawnObjectResponse &res)
 {
@@ -1903,35 +1925,67 @@ void MjRos::publish_base_pose()
     }
 }
 
-void MjRos::publish_sensor_data()
+// void MjRos::publish_sensor_data()
+// {
+//     if (pub_sensor_data_rate < 1E-9)
+//     {
+//         return;
+//     }
+
+//     ros::Rate loop_rate(pub_sensor_data_rate);
+
+//     std_msgs::Header header;
+//     geometry_msgs::Vector3Stamped sensor_data;
+//     while (ros::ok())
+//     {
+//         // Set header
+//         header.stamp = ros::Time::now();
+
+//         for (const std::pair<size_t, std::string> &sensor : MjSim::sensors)
+//         {
+//             header.seq += 1;
+//             header.frame_id = sensor.second;
+
+//             sensor_data.header = header;
+//             const int sensor_adr = m->sensor_adr[sensor.first];
+//             sensor_data.vector.x = d->sensordata[sensor_adr];
+//             sensor_data.vector.y = d->sensordata[sensor_adr + 1];
+//             sensor_data.vector.z = d->sensordata[sensor_adr + 2];
+
+//             sensors_pub.publish(sensor_data);
+//         }
+
+//         ros::spinOnce();
+//         loop_rate.sleep();
+//     }
+// }
+
+void MjRos::publish_ft_sensor_data()
 {
-    if (pub_sensor_data_rate < 1E-9)
+    ros::Rate loop_rate(60);
+
+    while(ros::ok())
     {
-        return;
-    }
+        // read force sensor data
+        const int sensorId = mj_name2id(m, mjtObj::mjOBJ_JOINT, "force_ll");
+        int adr = m->sensor_adr[sensorId];
+        int dim = m->sensor_dim[sensorId];
+        mjtNum sensor_data[dim];
+        mju_copy(sensor_data, &d->sensordata[adr], dim);
+        // std::cout << "sensor data " << d->sensordata[0] << " " << d->sensordata[1] << " "
+        // << d->sensordata[2] << " " << d->sensordata[3] << " " << d->sensordata[4] << " "
+        // << d->sensordata[5] << std::endl;
+        geometry_msgs::WrenchStamped ft_data;
+        ft_data.header.stamp = ros::Time::now();
+        ft_data.wrench.force.x = d->sensordata[0];
+        ft_data.wrench.force.y = d->sensordata[1];
+        ft_data.wrench.force.z = d->sensordata[2];
 
-    ros::Rate loop_rate(pub_sensor_data_rate);
+        ft_data.wrench.torque.x = d->sensordata[3];
+        ft_data.wrench.torque.y = d->sensordata[4];
+        ft_data.wrench.torque.z = d->sensordata[5];
 
-    std_msgs::Header header;
-    geometry_msgs::Vector3Stamped sensor_data;
-    while (ros::ok())
-    {
-        // Set header
-        header.stamp = ros::Time::now();
-
-        for (const std::pair<size_t, std::string> &sensor : MjSim::sensors)
-        {
-            header.seq += 1;
-            header.frame_id = sensor.second;
-
-            sensor_data.header = header;
-            const int sensor_adr = m->sensor_adr[sensor.first];
-            sensor_data.vector.x = d->sensordata[sensor_adr];
-            sensor_data.vector.y = d->sensordata[sensor_adr + 1];
-            sensor_data.vector.z = d->sensordata[sensor_adr + 2];
-
-            sensors_pub.publish(sensor_data);
-        }
+        ft_sensor_pub.publish(ft_data);
 
         ros::spinOnce();
         loop_rate.sleep();

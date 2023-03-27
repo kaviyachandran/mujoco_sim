@@ -93,7 +93,7 @@ public:
 
     static mjtNum sim_start;
 
-    static mjtNum *ddq;
+    static mjtNum *u;
 
     static mjtNum *dq;
 
@@ -116,7 +116,10 @@ public:
     // Fix bug from m->geom_pos and m->geom_quat
     static std::map<int, std::vector<mjtNum>> geom_pose;
 
-private:
+    const std::vector<std::string> effort_controlled_joints{"l_gripper_l_finger_joint", "r_gripper_l_finger_joint"};
+
+    static mjtNum *q_desired;
+
     MjSim() = default;
 
     ~MjSim();

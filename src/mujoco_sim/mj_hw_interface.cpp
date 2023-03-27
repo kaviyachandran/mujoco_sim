@@ -28,27 +28,33 @@ MjHWInterface::MjHWInterface(const std::string &robot)
     joint_velocities.resize(num_joints, 0.);
     joint_efforts.resize(num_joints, 0.);
 
-    // joint_positions_command.resize(num_joints, 0.);
-    joint_velocities_command.resize(num_joints, 0.);
-    joint_efforts_command.resize(num_joints, 0.);
+    joint_positions_command.resize((num_joints-mj_sim.effort_controlled_joints.size()), 0.);
+    //joint_velocities_command.resize(num_joints, 0.);
+    joint_efforts_command.resize(mj_sim.effort_controlled_joints.size(), 0);
 
     for (std::size_t i = 0; i < num_joints; i++)
     {
         hardware_interface::JointStateHandle joint_state_handle(joint_names[i], &joint_positions[i], &joint_velocities[i], &joint_efforts[i]);
         joint_state_interface.registerHandle(joint_state_handle);
 
-        // hardware_interface::JointHandle joint_handle_position(joint_state_interface.getHandle(joint_names[i]), &joint_positions_command[i]);
-        // position_joint_interface.registerHandle(joint_handle_position);
+        if(joint_names[i].compare(mj_sim.effort_controlled_joints[0]) != 0 && joint_names[i].compare(mj_sim.effort_controlled_joints[1]) != 0)
+        {   
+            // std::cout << "------------------position " << joint_names[i] << std::endl;
+            hardware_interface::JointHandle joint_handle_position(joint_state_interface.getHandle(joint_names[i]), &joint_positions_command[i]);
+            position_joint_interface.registerHandle(joint_handle_position);    
+        }
+        else{
+            // std::cout << "------------------effort " << joint_names[i] << std::endl;
+            hardware_interface::JointHandle joint_handle_effort(joint_state_interface.getHandle(joint_names[i]), &joint_efforts_command[i]);
+            effort_joint_interface.registerHandle(joint_handle_effort);
+        }
 
-        hardware_interface::JointHandle joint_handle_velocity(joint_state_interface.getHandle(joint_names[i]), &joint_velocities_command[i]);
-        velocity_joint_interface.registerHandle(joint_handle_velocity);
-
-        hardware_interface::JointHandle joint_handle_effort(joint_state_interface.getHandle(joint_names[i]), &joint_efforts_command[i]);
-        effort_joint_interface.registerHandle(joint_handle_effort);
+        // hardware_interface::JointHandle joint_handle_velocity(joint_state_interface.getHandle(joint_names[i]), &joint_velocities_command[i]);
+        // velocity_joint_interface.registerHandle(joint_handle_velocity);
     }
     registerInterface(&joint_state_interface);
-    // registerInterface(&position_joint_interface);
-    registerInterface(&velocity_joint_interface);
+    registerInterface(&position_joint_interface);
+    // registerInterface(&velocity_joint_interface);
     registerInterface(&effort_joint_interface);
 }
 
@@ -68,6 +74,15 @@ void MjHWInterface::read()
         joint_velocities[i] = d->qvel[dof_id];
         joint_efforts[i] = d->qfrc_inverse[dof_id];
     }
+
+    const int sensorId = mj_name2id(m, mjtObj::mjOBJ_JOINT, "force_ll");
+    int adr = m->sensor_adr[sensorId];
+    int dim = m->sensor_dim[sensorId];
+    mjtNum sensor_data[dim];
+    mju_copy(sensor_data, &d->sensordata[adr], dim);
+    // std::cout << "sensor data " << d->sensordata[0] << " " << d->sensordata[1] << " "
+    // << d->sensordata[2] << " " << d->sensordata[3] << " " << d->sensordata[4] << " "
+    // << d->sensordata[5] << std::endl;
 }
 
 void MjHWInterface::write()
@@ -78,14 +93,31 @@ void MjHWInterface::write()
         {
             const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_names[i].c_str());
             const int dof_id = m->jnt_dofadr[joint_id];
-            if (mju_abs(joint_velocities_command[i]) > mjMINVAL)
+            if(joint_names[i].compare(mj_sim.effort_controlled_joints[0]) != 0 && 
+            joint_names[i].compare(mj_sim.effort_controlled_joints[1]) != 0)
             {
-                MjSim::dq[dof_id] = joint_velocities_command[i];
+                const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_names[i].c_str());
+                const int dof_id = m->jnt_dofadr[joint_id];
+                d->qpos[dof_id] = joint_positions_command[i];
+                d->qvel[dof_id] = 0;
+                d->qfrc_applied[dof_id] = 0;
+
             }
             else
             {
-                MjSim::ddq[dof_id] = joint_efforts_command[i];
+                const int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, joint_names[i].c_str());
+                const int dof_id = m->jnt_dofadr[joint_id];
+                //MjSim::u[dof_id] = joint_efforts_command[i];
+                d->qfrc_applied[dof_id] = joint_efforts_command[i];
             }
+            // if (mju_abs(joint_velocities_command[i]) > mjMINVAL)
+            // {
+            //     MjSim::dq[dof_id] = joint_velocities_command[i];
+            // }
+            // else
+            // {
+            //     MjSim::ddq[dof_id] = joint_efforts_command[i];
+            // }
         }
     }
 }

@@ -47,12 +47,13 @@ private:
 
     // Hardware interfaces
     hardware_interface::JointStateInterface joint_state_interface;
-    // hardware_interface::PositionJointInterface position_joint_interface;
-    hardware_interface::VelocityJointInterface velocity_joint_interface;
+    hardware_interface::PositionJointInterface position_joint_interface;
+    // hardware_interface::VelocityJointInterface velocity_joint_interface;
     hardware_interface::EffortJointInterface effort_joint_interface;
 
-private:
+
     std::vector<std::string> joint_names;
+    MjSim mj_sim;
 
     // States
     std::vector<double> joint_positions;
@@ -60,7 +61,7 @@ private:
     std::vector<double> joint_efforts;
 
     // Commands
-    // std::vector<double> joint_positions_command;
-    std::vector<double> joint_velocities_command;
+    std::vector<double> joint_positions_command;
+    //std::vector<double> joint_velocities_command;
     std::vector<double> joint_efforts_command;
 };
