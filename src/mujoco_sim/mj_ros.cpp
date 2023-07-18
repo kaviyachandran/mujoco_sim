@@ -539,6 +539,9 @@ void MjRos::init()
     reset_robot_server = n.advertiseService("/mujoco/reset", &MjRos::reset_robot_service, this);
     ROS_INFO("Started [%s] service.", reset_robot_server.getService().c_str());
 
+    reset_object_server = n.advertiseService("/mujoco/reset_object_joint_state", &MjRos::reset_object_service, this);
+    ROS_INFO("Started [%s] service.", reset_object_server.getService().c_str());
+
     spawn_objects_server = n.advertiseService("/mujoco/spawn_objects", &MjRos::spawn_objects_service, this);
     ROS_INFO("Started [%s] service.", spawn_objects_server.getService().c_str());
 
@@ -847,6 +850,22 @@ bool MjRos::reset_robot_service(std_srvs::TriggerRequest &req, std_srvs::Trigger
         }
     }
     return true;
+}
+
+bool MjRos::reset_object_service(mujoco_msgs::ResetObjectRequest &req, mujoco_msgs::ResetObjectResponse &res)
+{   
+    try{
+        int joint_id = mj_name2id(m, mjtObj::mjOBJ_JOINT, req.object_joint_name.c_str());
+        std::cout << "joint id " << joint_id << "val " << d->qpos[m->jnt_qposadr[joint_id]] << std::endl;
+        d->qpos[m->jnt_qposadr[joint_id]] = req.joint_value;
+        res.status = true;
+        return true;
+    }
+    catch (std::exception& e){
+        ROS_WARN("Error in reset object service");
+        res.status = false;
+        return false;
+    }
 }
 
 bool MjRos::spawn_objects_service(mujoco_msgs::SpawnObjectRequest &req, mujoco_msgs::SpawnObjectResponse &res)
