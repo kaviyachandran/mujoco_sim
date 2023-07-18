@@ -27,6 +27,7 @@
 #include "mujoco_msgs/ObjectStateArray.h"
 #include "mujoco_msgs/ObjectStatus.h"
 #include "mujoco_msgs/SpawnObject.h"
+#include "mujoco_msgs/ResetObject.h"
 
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
@@ -134,6 +135,17 @@ private:
 
     bool reset_robot_service(std_srvs::TriggerRequest &req, std_srvs::TriggerResponse &res);
 
+    /**
+     * @brief Reset the object to the initial joint state service
+     *
+     * @param req Request
+     * @param res Response
+     * @return true Success
+     * @return false Fail
+     */
+
+    bool reset_object_service(mujoco_msgs::ResetObjectRequest &req, mujoco_msgs::ResetObjectResponse &res);
+
     bool spawn_objects_service(mujoco_msgs::SpawnObjectRequest &req, mujoco_msgs::SpawnObjectResponse &res);
 
     void spawn_objects(const std::vector<mujoco_msgs::ObjectStatus> objects);
@@ -166,6 +178,8 @@ private:
     ros::ServiceServer screenshot_server;
 
     ros::ServiceServer reset_robot_server;
+
+    ros::ServiceServer reset_object_server;
 
     ros::ServiceServer spawn_objects_server;
 
