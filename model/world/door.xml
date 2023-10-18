@@ -1,0 +1,47 @@
+<mujoco model="door_main">
+    <compiler angle="radian" autolimits="true"/>
+    <size/>
+    <default/>
+    <worldbody>
+        <body name="door_main_footprint" pos="1.20 -0.210 0.745" quat="0.707388 0 0 -0.706825">
+            <body name="door_container">
+                <body name="wall1">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="1.8" diaginertia="0.012135 0.03576 0.024375"/>
+                    <geom size="0.2 0.025 0.14" pos="-0.2 0.018 0.14" quat="0.707388 0 0 0.706825" type="box" rgba="0.23 0.08 0.08 1"/>
+                </body>
+                <body name="wall2">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="1.8" diaginertia="0.012135 0.03576 0.024375"/>
+                    <geom size="0.2 0.025 0.14" pos="0.2 0.025 0.14" quat="0.707105 0 0 -0.707108" type="box" rgba="0.23 0.08 0.08 1"/>
+                </body>
+                <body name="wall3">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="1.8" diaginertia="0.012135 0.03576 0.024375"/>
+                    <geom size="0.2 0.025 0.14" pos="-0.0069 0.1984 0.14" quat="1.32679e-06 0 0 1" type="box" rgba="0.23 0.08 0.08 1"/>
+                </body>
+                <body name="wall4">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="2.0" diaginertia="0.027083 0.0604167 0.034167"/>
+                    <geom size="0.225 0.025 0.2" pos="-0.00029 0.02489 0.3" quat="0.707388 0.706825 0 0" type="box" rgba="0.23 0.08 0.08 1"/>
+                </body>
+            </body>
+            <body name="door_main_area" pos="0 0 0.135" quat="0.707388 0 0 -0.706825">
+                <body name="door_hinge" pos="0.1675 -0.15548 0" quat="0.707 0 0 0.707">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="0.25" diaginertia="0.000222 0.000222 0.000028"/>
+                    <geom size="0.015 0.05" type="cylinder" condim="3" friction="1 1 1" rgba="0 1.0 1.0 1.0"/>
+                    <joint armature="0.01" axis="0 0 1" damping="1" frictionloss="0.1" limited="true" name="door_hinge_joint" range="-1.57 0" type="hinge"/>
+                    <body name="door" pos="0.1643 0.010 0" quat="1 0 0 0">
+                        <inertial pos="0 0 0" quat="0 0 0 1" mass="1.6" diaginertia="0.010053 0.024117 0.01473"/>
+                        <geom size="0.1643 0.025 0.135" type="box" rgba="1 0.423529 0.0392157 1"/>
+                        <body name="door_handle_one" pos="0.140 -0.040 0" quat="0.707388 -0.706825 0 0">
+                            <inertial pos="0 0 0" quat="0 0 0 1" mass="0.125" diaginertia="0.00002369 0.00002369 0.00001406"/>
+                            <geom size="0.015 0.02" type="cylinder" rgba="0 0 1 1"/>
+                            <body name="door_handle_two" pos="-0.040 0.0 -0.03" quat="0.707 0.0 0.707 0.0 ">
+                                <inertial pos="0 0 0" quat="0 0 0 1" mass="0.250" diaginertia="0.0001828125 0.0001828125 0.00002812"/>
+                                <geom size="0.015 0.06"  type="cylinder" rgba="0 0 1 1"/>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+    <equality/>
+</mujoco>
