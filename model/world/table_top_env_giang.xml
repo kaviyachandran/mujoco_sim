@@ -1,0 +1,27 @@
+<mujoco model="table_door">
+    <compiler angle="radian" meshdir="/home/kaviya/giskard_ws/src/mujoco_sim/model/tmp/table_top_env/meshes/" autolimits="true"/>
+    <size/>
+    <default/>
+    <asset>
+        <mesh name="JokkmokkTable" file="JokkmokkTable.obj"/>
+    </asset>
+    <worldbody>
+        <body name="table_top_env">
+            <geom pos="1.4 0.11 0.35" quat="0.707107 0 0 0.707107" type="mesh" mesh="JokkmokkTable"/>
+            <geom size="0.025 0.025 0.05" pos="1.04 0.3 0.85" quat="0.707107 0 0 0.707107" type="box"/>
+            <geom size="0.2 0.025 0.14" pos="1.318 -0.01 0.89" quat="1 0 0 -0.000398163" type="box"/>
+            <geom size="0.2 0.025 0.14" pos="1.325 -0.41 0.89" quat="-1.8366e-06 0 0 -1" type="box"/>
+            <geom size="0.2 0.025 0.14" pos="1.4984 -0.2031 0.89" quat="0.707108 0 0 0.707106" type="box"/>
+            <geom size="0.225 0.025 0.2" pos="1.32489 -0.20971 1.05" quat="0.500199 0.499801 -0.499801 -0.500199" type="box"/>
+            <geom size="0.015 0.05" pos="1.14452 -0.0425 0.89469" quat="0.707107 0 0 -0.707107" type="cylinder" rgba="0 1 1 1"/>
+            <body name="door" pos="1.14452 -0.0505 0.89469" quat="0.707107 0 0 -0.707107">
+                <inertial pos="0.080247 -0.0147688 2.36637e-06" quat="0.163173 0.688282 -0.16299 0.687805" mass="3.3692" diaginertia="0.285234 0.209869 0.184266"/>
+                <joint name="door_hinge_joint" pos="0 0 0" axis="0 0 1" limited="false" range="0 -1.57"/>
+                <geom size="0.1643 0.025 0.135" pos="0.17 0 0" type="box" rgba="1 0.423529 0.0392157 1"/>
+                <geom size="0.015 0.02" pos="0.3 -0.0372 0" quat="0.000844632 0.000281544 -0.707107 0.707107" type="cylinder" rgba="0 0 1 1"/>
+                <geom size="0.015 0.045" pos="0.279976 -0.0671841 1.59456e-05" quat="0.000563312 0.707388 -0.000562864 0.706825" type="cylinder" rgba="0 0 1 1"/>
+            </body>
+        </body>
+    </worldbody>
+    <equality/>
+</mujoco>
