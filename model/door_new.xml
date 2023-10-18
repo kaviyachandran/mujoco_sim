@@ -1,0 +1,22 @@
+<mujoco model="door_box_model">
+    <compiler angle="radian" meshdir="door_new/meshes/" autolimits="true"/>
+    <size/>
+    <default/>
+    <worldbody>
+        <body name="door_new">
+            <geom size="0.015 0.05" pos="-0.1675 -0.15548 0.14469" type="cylinder" rgba="0 1 1 1"/>
+            <geom size="0.2 0.025 0.14" pos="-0.2 0.018 0.14" quat="0.707388 0 0 0.706825" type="box"/>
+            <geom size="0.2 0.025 0.14" pos="0.2 0.025 0.14" quat="0.707105 0 0 -0.707108" type="box"/>
+            <geom size="0.2 0.025 0.14" pos="-0.0069 0.1984 0.14" quat="1.32679e-06 0 0 1" type="box"/>
+            <geom size="0.225 0.025 0.2" pos="-0.00029 0.02489 0.3" quat="0.707388 0.706825 0 0" type="box"/>
+            <body name="door" pos="-0.1595 -0.15548 0.14469">
+                <inertial pos="0.0726684 -0.0147745 -3.30614e-06" quat="0.702988 0.703348 0.0735543 0.0754944" mass="3.3692" diaginertia="0.239172 0.227454 0.192582"/>
+                <joint name="door_hinge_joint" pos="0 0 0" axis="0 0 1" limited="false" range="0 -1.57"/>
+                <geom size="0.17 0.025 0.135" pos="0.17 0 0" type="box" rgba="1 0.423529 0.0392157 1"/>
+                <geom size="0.015 0.02" pos="0.247 -0.0372 0" quat="0.500398 0.5 -0.5 0.499602" type="cylinder" rgba="0 0 1 1"/>
+                <geom size="0.015 0.045" pos="0.274976 -0.0672223 -2.22781e-05" quat="0.000563312 0.707388 -0.000562864 0.706825" type="cylinder" rgba="0 0 1 1"/>
+            </body>
+        </body>
+    </worldbody>
+    <equality/>
+</mujoco>

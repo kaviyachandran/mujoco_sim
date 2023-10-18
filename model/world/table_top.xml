@@ -1,0 +1,115 @@
+<mujoco model="tabletop">
+    <compiler angle="radian" meshdir="/home/kaviya/giskard_ws/src/mujoco_sim/model/world/meshes" inertiafromgeom="true"/>
+    <!-- <size njmax="500" nconmax="100" /> -->
+    <option gravity="0 0 -9.81" timestep="0.001" integrator="RK4" solver="CG" tolerance="1e-6" >
+        <flag contact="enable"  multiccd="enable" />
+    </option>
+
+    <!-- <size nconmax="500" njmax="5000" nstack="5000000"/> -->
+    <asset>
+        <mesh name="JokkmokkTable0" file="JokkmokkTable_hull_1.stl" />
+        <mesh name="JokkmokkTable1" file="JokkmokkTable_hull_2.stl" />
+        <mesh name="JokkmokkTable2" file="JokkmokkTable_hull_3.stl" />
+        <mesh name="JokkmokkTable3" file="JokkmokkTable_hull_4.stl" />
+        <mesh name="JokkmokkTable4" file="JokkmokkTable_hull_5.stl" />
+        <mesh name="JokkmokkTable5" file="JokkmokkTable_hull_6.stl" />
+        <mesh name="JokkmokkTable6" file="JokkmokkTable_hull_7.stl" />
+        <mesh name="JokkmokkTable7" file="JokkmokkTable_hull_8.stl" />
+        <mesh name="JokkmokkTable8" file="JokkmokkTable_hull_9.stl" />
+        <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4" />
+        <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" />
+    </asset>
+    <contact>
+        <pair geom1="top" geom2="stone_box"/>
+    </contact>
+
+    <default>
+        <geom  solref=".001 1" friction="1 0.1 0.1" condim="3"/>
+        <default class="visual">
+            <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        </default>
+        <default class="collision">
+            <geom group="3"/>
+        </default>
+    </default>
+
+    <worldbody>
+        <body name="stone"  pos="1.040 0.3 0.80" quat="0.707 0 0 0.707107">
+            <freejoint/>
+            <geom name="stone_box" type="box" size="0.025 0.025 0.050" rgba="0.43 0.1647 0.1647 1" condim="6" />
+            <inertial pos="0 0 0" mass="0.2024" diaginertia="4.369e-5 4.028e-5 1.407e-5"/>
+        </body>
+    </worldbody>
+
+
+    <worldbody>
+        <light pos="0 0 1"/>
+        <light pos="0.3 0 1.5" dir="0 0 -1" directional="true"/>
+        <geom name="floor" pos="0 0 -0.01" size="0 0 .05" type="plane" material="grid" condim="3" />
+        <!-- <body name="box_body" pos="1.040 0.3 0.80" quat="0.707 0 0 0.707107">
+            <geom name="box_crazy" size="0.025 0.025 0.050" rgba="0.43 0.1647 0.1647 1" type="box" condim="6"/>
+            <joint name="box_joint" type="free" stiffness="0" damping="0.5"/>
+            <inertial pos="0 0 0" quat="0 0 0 1" mass="2" diaginertia="0.001667 0.001667 0.001667"/>
+        </body> -->
+      <!--   <body name="cylinder_main" pos="1.040 0.3 0.85" quat="0.707 0 0 0.707107">
+            <inertial pos="0 0 0" quat="0 0 0 1" mass="1" diaginertia="0.001667 0.001667 0.001667"/>
+            <freejoint/>
+            <geom name="bottle" type="cylinder" size="0.03 0.07" rgba="0.43 0.1647 0.1647 1" />
+        </body> -->
+        <body name="jokkmokk_table_main" pos="1.40 0.110 0.350" quat="0.707 0 0 0.70710">
+                <inertial pos="0 0 0" quat="0 0 0 1" mass="2" diaginertia="1 1 1" />
+                <geom name="top" type="plane" pos="0 0 0.4" size="1 0.4 .05" group="3"/>
+                <geom name="table0" type="mesh" mesh="JokkmokkTable0" />
+                <geom class="visual" mesh="JokkmokkTable1" />
+                <geom class="visual"  mesh="JokkmokkTable2" />
+                <geom class="visual"  mesh="JokkmokkTable3" />
+                <geom class="visual"  mesh="JokkmokkTable4" />
+                <geom class="visual"  mesh="JokkmokkTable5" />
+                <geom class="visual"  mesh="JokkmokkTable6" />
+                <geom class="visual"  mesh="JokkmokkTable7" />
+                <geom class="visual" mesh="JokkmokkTable8" />
+        </body>
+    </worldbody>
+    <worldbody>
+        <body name="door_main_footprint" pos="1.20 -0.210 0.745" quat="0.707388 0 0 -0.706825">
+            <body name="door_container">
+                <body name="wall1">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="1.8" diaginertia="0.012135 0.03576 0.024375"/>
+                    <geom size="0.2 0.025 0.14" pos="-0.2 0.018 0.14" quat="0.707388 0 0 0.706825" type="box" rgba="0.23 0.08 0.08 1"/>
+                </body>
+                <body name="wall2">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="1.8" diaginertia="0.012135 0.03576 0.024375"/>
+                    <geom size="0.2 0.025 0.14" pos="0.2 0.025 0.14" quat="0.707105 0 0 -0.707108" type="box" rgba="0.23 0.08 0.08 1"/>
+                </body>
+                <body name="wall3">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="1.8" diaginertia="0.012135 0.03576 0.024375"/>
+                    <geom size="0.2 0.025 0.14" pos="-0.0069 0.1984 0.14" quat="1.32679e-06 0 0 1" type="box" rgba="0.23 0.08 0.08 1"/>
+                </body>
+                <body name="wall4">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="2.0" diaginertia="0.027083 0.0604167 0.034167"/>
+                    <geom size="0.225 0.025 0.2" pos="-0.00029 0.02489 0.3" quat="0.707388 0.706825 0 0" type="box" rgba="0.23 0.08 0.08 1"/>
+                </body>
+            </body>
+            <body name="door_main_area" pos="0 0 0.135" quat="0.707 0 0 -0.707">
+                <body name="door_hinge" pos="0.1675 -0.15548 0" quat="0.707 0 0 0.707">
+                    <inertial pos="0 0 0" quat="0 0 0 1" mass="0.25" diaginertia="0.000222 0.000222 0.000028"/>
+                    <geom size="0.015 0.05" type="cylinder" condim="3" friction="1 1 1" rgba="0 1.0 1.0 1.0"/>
+                    <joint armature="0.01" axis="0 0 1" damping="1" frictionloss="0.1" limited="true" name="door_hinge_joint" range="-1.57 0" type="hinge"/>
+                    <body name="door" pos="0.164 0.010 0" quat="1 0 0 0">
+                        <inertial pos="0 0 0" quat="0 0 0 1" mass="1.6" diaginertia="0.010053 0.024117 0.01473"/>
+                        <geom name="door_obj" size="0.1643 0.025 0.135" type="box" rgba="1 0.423529 0.0392157 1"/>
+                        <body name="door_handle_one" pos="0.140 -0.040 0" quat="0.707 -0.707 0 0">
+                            <inertial pos="0 0 0" quat="0 0 0 1" mass="0.125" diaginertia="0.00002369 0.00002369 0.00001406"/>
+                            <geom size="0.015 0.02" type="cylinder" rgba="0 0 1 1"/>
+                            <body name="door_handle_two" pos="-0.040 0.0 -0.030" quat="0.707 0.0 0.707 0.0 ">
+                                <inertial pos="0 0 0" quat="0 0 0 1" mass="0.250" diaginertia="0.0001828125 0.0001828125 0.00002812"/>
+                                <geom name="door_handle_two_obj" size="0.015 0.06"  type="cylinder" rgba="0 0 1 1" condim="6" priority="1"/>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+    <include file="../pr2_mujoco_model/pr2_calibrated_with_ft2_without_virtual_joints.xml"/>
+</mujoco>
