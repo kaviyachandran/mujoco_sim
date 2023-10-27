@@ -446,7 +446,7 @@ void MjRos::init()
     {
         if (!ros::param::get("~pub_joint_states/robot_bodies_rate", pub_joint_states_rate[EObjectType::Robot]))
         {
-            pub_joint_states_rate[EObjectType::Robot] = 0.0;
+            pub_joint_states_rate[EObjectType::Robot] = 60.0;
         }
         if (!ros::param::get("~pub_joint_states/world_bodies_rate", pub_joint_states_rate[EObjectType::World]))
         {
