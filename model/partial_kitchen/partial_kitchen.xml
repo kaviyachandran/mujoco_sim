@@ -1,0 +1,83 @@
+<!-- There is a repo with household objects in mujoco : furniture sim -->
+
+<mujoco model="iai_kitchen">
+  <compiler angle="radian" meshdir="assets" autolimits="true" balanceinertia="true"/>
+  <default>
+      <default class="collision">
+        <geom group="2" />
+      </default>
+  </default>
+  <asset>
+    <texture builtin="checker" height="512" name="texplane" rgb1=".2 .3 .4" rgb2=".1 .15 .2" type="2d" width="512" />
+    <material name="MatPlane" reflectance="0.05" shininess="0.01" specular="0.01" texrepeat="1 1" texture="texplane" texuniform="true" />
+    <material name="black" rgba="0.25 0.25 0.25 1"/>
+    <mesh name="SinkArea" file="SinkArea.obj"/>
+    <mesh name="Sink" file="Sink.obj"/>
+    <mesh name="Panel_60" file="Panel_60.obj"/>
+    <mesh name="Drawer_60_58" file="Drawer_60_58.obj"/>
+    <mesh name="Handle60" file="handle60_rot.stl"/>
+    <mesh name="Drawer_80_14" file="Drawer_80_14.obj"/>
+    <mesh name="Handle80" file="Handle80.obj"/>
+    <mesh name="Drawer_80_29" file="Drawer_80_29.obj"/>
+    <mesh name="DishWasher" file="dishwasher.stl"/>
+    <mesh name="DishWasherDoor" file="DishWasherDoor.obj"/>
+  </asset>
+  <worldbody>
+      <light pos="0 0 1000" castshadow="false" />
+      <geom name="ground_plane" type="plane" material="MatPlane" size="5 5 10" rgba="1 1 1 1"/>
+  </worldbody>
+
+  <worldbody>
+    <!-- <geom name="sink_area" pos="1.565 0.3 0.41" quat="0 0 0 1" type="mesh" mesh="SinkArea" class="collision"/> -->
+    <geom name="sink_area_bottom" pos="1.565 0.3 0.045" quat="0 0 0 1" type="box" size="0.295 1.07 0.045" class="collision" material="black"/>
+    <geom name="sink_area_top" pos="1.565 0.3 0.75" quat="0 0 0 1" type="box" size="0.295 1.07 0.02" class="collision" material="black"/>
+    <geom name="sink_area_right" pos="1.565 -0.782 0.37" quat="0 0 0 1" type="box" size="0.295 0.02 0.4" class="collision" material="black"/>
+    <geom name="sink_area_left" pos="1.565 1.35 0.35" quat="0 0 0 1" type="box" size="0.295 0.02 0.4" class="collision" material="black"/>
+    <!-- <geom name="sink_top" size="0.2875 0.8 0.01" pos="1.565 0.525 0.84" quat="0 0 0 1" type="box" class="collision"/> -->
+    <!-- <geom pos="1.56 -0.17 0.8514" quat="0 0 0 1" type="mesh" mesh="Sink"/> -->
+    <!-- <geom name="sink_area_dish_washer_main" pos="1.555 0.2 0.47" quat="0 0 0 1" type="mesh" mesh="DishWasher" class="collision"/> -->
+    <!-- <geom pos="1.285 -0.4 0.765" quat="0 0 0 1" type="mesh" mesh="Panel_60"/> -->
+   
+    <!-- <body name="sink_area_trash_drawer_main" pos="1.555 -0.4 0.395" quat="0 0 0 1">
+      <inertial pos="0.185 0 0.125" quat="0.624471 0.331716 0.331716 0.624471" mass="2" diaginertia="2.0997 2.0997 2"/>
+      <joint name="sink_area_trash_drawer_main_joint" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
+      <geom type="mesh" mesh="Drawer_60_58"/>
+      <geom pos="0.37 0 0.25" type="mesh" mesh="Handle60"/>
+    </body>
+    <body name="sink_area_left_upper_drawer_main" pos="1.555 0.9 0.755" quat="0 0 0 1">
+      <inertial pos="0.17625 0 0.00875" quat="0.512246 0.487446 0.487446 0.512246" mass="2" diaginertia="2.06228 2.06228 2"/>
+      <joint name="sink_area_left_upper_drawer_main_joint" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
+      <geom type="mesh" mesh="Drawer_80_14"/>
+      <geom pos="0.3525 0 0.0175" type="mesh" mesh="Handle80"/>
+    </body>
+    <body name="sink_area_left_middle_drawer_main" pos="1.555 0.9 0.53" quat="0 0 0 1">
+      <inertial pos="0.17625 0 0.055" quat="0.569625 0.41896 0.41896 0.569625" mass="2" diaginertia="2.06818 2.06818 2"/>
+      <joint name="sink_area_left_middle_drawer_main_joint" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
+      <geom type="mesh" mesh="Drawer_80_29"/>
+      <geom pos="0.3525 0 0.11" type="mesh" mesh="Handle80"/>
+    </body> -->
+    <!-- <body name="sink_area_left_bottom_drawer_main" pos="1.555 0.9 0.23" quat="0 0 0 1">
+      <inertial pos="0.17625 0 0.055" quat="0.569625 0.41896 0.41896 0.569625" mass="2" diaginertia="2.06818 2.06818 2"/>
+      <joint name=" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
+      <geom type="mesh" mesh="Drawer_80_29"/>
+      <geom pos="0.3525 0 0.11" type="mesh" mesh="Handle80"/>
+    </body> -->
+    <body name="sink_area_dish_washer_door"  pos="1.285 0.2 0.1" quat="0 0 -0.707107 0.707107">
+      <inertial pos="0.0425 -0.2875 0" quat="0.705204 0.705204 0.0518421 0.0518421" mass="2" diaginertia="2.16892 2.16892 2"/>
+      <geom type="box" size="0.01 0.31 0.30" pos="0.01 -0.32 0.0"  class="collision"/>
+      <joint name="sink_area_dish_washer_door_joint" type="hinge" axis="0 0 1" range="0 1.57" limited="true" damping="0.01"/>
+      <geom name="sink_area_dish_washer_door_handle" pos="0.06 -0.56 0" quat="0.707107 -0.707107 0 0" type="mesh" mesh="Handle60"  class="collision"/>
+    </body>
+   <!--  <body name="sink_area_dish_washer_tray_bottom" pos="1.635 0.2 0.62" quat="0 0 0 1">
+      <joint name="sink_area_dish_washer_tray_main" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
+      <geom size="0.16 0.25 0.025" type="box"/>
+      <geom size="0.16 0.0025 0.085" pos="0 -0.25 0.075" type="box"/>
+      <geom size="0.16 0.0025 0.085" pos="0 0.25 0.075" type="box"/>
+      <geom size="0.0025 0.25 0.085" pos="-0.16 0 0.075" type="box"/>
+      <geom size="0.0025 0.25 0.085" pos="0.16 0 0.075" type="box"/>
+      <geom size="0.005 0.1 0.005" pos="0.22 -0.1 0.055" type="box"/>
+      <geom size="0.015 0.005 0.005" pos="0.21 -0.2 0.055" type="box"/>
+      <geom size="0.015 0.005 0.005" pos="0.21 0 0.055" type="box"/> 
+    </body> -->
+  </worldbody>
+</mujoco>
