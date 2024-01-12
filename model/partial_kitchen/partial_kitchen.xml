@@ -2,6 +2,9 @@
 
 <mujoco model="iai_door">
   <compiler angle="radian" meshdir="assets" autolimits="true"  inertiafromgeom="true" balanceinertia="true" />
+  <option solver="CG" integrator="RK4" >
+    <flag contact="enable" energy="disable" />
+  </option>
 
   <asset>
     <texture builtin="checker" height="512" name="texplane" rgb1=".2 .3 .4" rgb2=".1 .15 .2" type="2d" width="512" />
