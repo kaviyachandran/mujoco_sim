@@ -148,8 +148,10 @@
       </geometry>
     </visual>
     <collision>
+      <!-- <origin rpy="1.57079 0 0" xyz="0 0 0"/> -->
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
+        <!-- <box size="0.015 0.015 0.5"/> -->
         <mesh filename="package://mujoco_sim/model/partial_kitchen/assets/handle60_rot.stl"/>
       </geometry>
     </collision>
@@ -162,19 +164,19 @@
     </joint>
 
     <joint name="sink_area_top_joint" type="fixed">
-        <origin rpy="0 0 -3.14" xyz="1.565 0.3 0.8"/>
+        <origin rpy="0 0 -3.14" xyz="1.565 0.3 0.825"/>
         <parent link="odom_combined"/>
         <child link="sink_area_top"/>
     </joint>
 
     <joint name="sink_area_right_joint" type="fixed">
-        <origin rpy="0 0 -3.14" xyz="1.565 -0.782 0.37"/>
+        <origin rpy="0 0 -3.14" xyz="1.565 -0.782 0.395"/>
         <parent link="odom_combined"/>
         <child link="sink_area_right"/>
    </joint>
 
     <joint name="sink_area_left_joint" type="fixed">
-        <origin rpy="0 0 -3.14" xyz="1.565 1.35 0.35"/>
+        <origin rpy="0 0 -3.14" xyz="1.565 1.35 0.395"/>
         <parent link="odom_combined"/>
         <child link="sink_area_left"/>
    </joint>
