@@ -96,7 +96,7 @@
    <!--  <body name="sink_area_dish_washer_tray_bottom" pos="1.635 0.2 0.62" quat="0 0 0 1">
       <joint name="sink_area_dish_washer_tray_main" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
       <geom size="0.16 0.25 0.025" type="box"/>
-      <geom size="0.16 0.0025 0.085" pos="0 -0.25 0.075" type="env_setupenv_setupdoor_setup"/>
+      <geom size="0.16 0.0025 0.085" pos="0 -0.25 0.075" type="box"/>
       <geom size="0.16 0.0025 0.085" pos="0 0.25 0.075" type="box"/>
       <geom size="0.0025 0.25 0.085" pos="-0.16 0 0.075" type="box"/>
       <geom size="0.0025 0.25 0.085" pos="0.16 0 0.075" type="box"/>
