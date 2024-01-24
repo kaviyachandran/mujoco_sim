@@ -1,0 +1,71 @@
+<!-- There is a repo with household objects in mujoco : furniture sim -->
+
+<mujoco model="iai_kitchen">
+  <compiler angle="radian" meshdir="assets" autolimits="true" balanceinertia="true" />
+
+  <asset>
+    <texture builtin="checker" height="512" name="texplane" rgb1=".2 .3 .4" rgb2=".1 .15 .2" type="2d" width="512" />
+    <material name="MatPlane" reflectance="0.05" shininess="0.01" specular="0.01" texrepeat="1 1" texture="texplane" texuniform="true" />
+    <material name="black" rgba="0.25 0.25 0.25 1"/>
+    <mesh name="SinkArea" file="SinkArea.obj"/>
+    <mesh name="Sink" file="Sink.obj"/>
+    <mesh name="Panel_60" file="Panel_60.obj"/>
+    <mesh name="Drawer_60_58" file="Drawer_60_58.obj"/>
+    <mesh name="Handle60" file="handle60_rot.stl"/>
+    <mesh name="Drawer_80_14" file="Drawer_80_14.obj"/>
+    <mesh name="Handle80" file="Handle80.obj"/>
+    <mesh name="Drawer_80_29" file="Drawer_80_29.obj"/>
+    <mesh name="DishWasher" file="dishwasher_rot.stl"/>
+    <mesh name="DishWasherDoor" file="dishwasher_door.stl"/>
+  </asset>
+   <default>
+        <default class="viz_dishwasher" >
+            <geom group="1"  contype="0" conaffinity="0"/>
+        </default>
+        <default class="col">
+            <geom rgba=".4 .8 .5 1" group="2" /> 
+            <!-- contype="1" conaffinity="0" -->
+        </default>
+   </default>
+  <worldbody>
+      <light pos="0 0 1000" castshadow="false" />
+      <geom name="ground_plane" type="plane" material="MatPlane" size="5 5 10" rgba="1 1 1 1"/>
+  </worldbody>
+
+  <worldbody>
+     <!-- <geom name="sink_area" pos="1.565 0.3 0.41" quat="0 0 0 1" type="mesh" mesh="SinkArea" />  -->
+    <!-- <geom name="sink_area_bottom" pos="1.565 0.3 0.045" quat="0 0 0 1" type="box" size="0.295 1.07 0.038"  material="black"/>
+    <geom name="sink_area_top" pos="1.565 0.3 0.8" quat="0 0 0 1" type="box" size="0.295 1.07 0.02"  material="black"/>
+    <geom name="sink_area_right" pos="1.565 -0.782 0.37" quat="0 0 0 1" type="box" size="0.295 0.02 0.449"  material="black"/>
+    <geom name="sink_area_left" pos="1.565 1.35 0.35" quat="0 0 0 1" type="box" size="0.295 0.02 0.43"  material="black"/> -->
+
+    <!-- Check urdf and make this dishwash -->
+    <!-- Check what does group, contype and conaffinity does -->
+    <body name="dishwasher_main" pos="1.555 0.2 0.42" quat="0 0 0 1">
+        <!-- <geom name="dishwasher" type="mesh" mesh="DishWasher" />  -->
+        <geom name="dish_top" type="box" pos="0.00 0 .3" size=".28 .26 .030" class="col"/>
+         <geom name="dish_bottom" type="box" pos="0.00 0 -.394" size=".28 .26 .04" class="col"/>
+        <geom name="dish_back" type="box" pos="-0.265 0 -0.07" size=".015 .26 .35" class="col"/>
+        <geom name="dish_right" type="box" pos="0.01 0.22 -0.05" size=".27 .031 .35" class="col"/> 
+        <geom name="dish_left" type="box" pos="0.01 -0.23 -0.05" size=".27 .031 .35" class="col"/>
+    
+        <body name="sink_area_dish_washer_door"  pos="0.3 0 -0.34" quat="0.707 -0.707107 0 0">
+          <inertial pos="0 0 0" mass="2" diaginertia="1 1 1"/>
+          <!-- <geom name="dishwasher_door" type="mesh" mesh="DishWasherDoor" mass="2"/>  -->
+          <geom type="box" size="0.02 0.34 0.255" pos="0.01 -0.33 0.0" rgba=".1 .1 .1 1" />
+          <joint name="sink_area_dish_washer_door_joint" type="hinge" axis="0 0 1" range="0 1.57" limited="true" damping="0.01" frictionloss="0.01" stiffness="0.01"/>
+          <!-- <geom name="sink_area_dish_washer_door_handle" pos="0.073 -0.58 0" quat="0.707107 -0.707107 0 0" type="mesh" mesh="Handle60"/> -->
+          <!-- <body name="sink_area_dish_washer_door_handle" pos="0.08 -0.62 0"  quat="0.707107 -0.707107 0 0"> -->
+            <geom type="capsule" size="0.015 0.23" pos="0.085 -0.58 0" />
+            <geom type="capsule" size=".015 .022" pos="0.061 -0.58 -0.23" quat="0.7071 0 0.7071 0" />
+            <geom type="capsule" size=".015 .022" pos="0.061 -0.58 0.23" quat="0.7071 0 0.7071 0" />
+           <!-- </body> -->
+           <!-- <geom type="box" size="0.02 0.32 0.255" pos="0.005 -0.28 0.0" class="col"/> -->
+           <!-- <geom type="capsule" size="0.015 0.015" pos="0.065 -0.58 0.25" quat="0.7071 0 0.7071 0" class="col" />
+           <geom type="capsule" size="0.015 0.015" pos="0.065 -0.58 -0.25" quat="0.7071 0 0.7071 0" class="col" /> 
+           <geom type="capsule" size="0.015 0.26" pos="0.075 -0.58 0" class="col" />  -->
+      </body> 
+    </body>
+
+  </worldbody>
+</mujoco>

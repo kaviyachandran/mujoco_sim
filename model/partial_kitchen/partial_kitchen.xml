@@ -1,9 +1,11 @@
 <!-- There is a repo with household objects in mujoco : furniture sim -->
 
 <mujoco model="iai_door">
-  <compiler angle="radian" meshdir="assets" autolimits="true"  inertiafromgeom="true" balanceinertia="true" />
+  <!-- inertiafromgeom="true"  -->
+  <compiler angle="radian" meshdir="assets" autolimits="true"  balanceinertia="true" /> 
   <option solver="Newton" integrator="RK4" >
-    <flag contact="enable" energy="disable" multiccd="enable"/>
+    <!-- <flag contact="enable" multiccd="enable"/>   -->
+    <!-- energy="disable"  -->
   </option>
 
   <asset>
@@ -22,9 +24,9 @@
     <mesh name="DishWasherDoor" file="dishwasher_door.stl"/>
   </asset>
    <default>
-   <!-- Test the contact class solimp - harder contact setting -->
+   <!-- Test the contact class solimp - harder contact setting friction="2 0.05 0.01" -->
         <default class="contact">
-          <geom condim="4" solimp="0.99 0.99 0.01" solref="0.01 1" friction="2 0.05 0.01"/>
+          <geom contype="3" condim="4" solimp="0.95 0.95 0.01" solref="0.01 1" />   
         </default>
         <default class="viz_dishwasher" >
             <geom group="1"  contype="0" conaffinity="0"/>
@@ -45,61 +47,33 @@
     <geom name="sink_area_right" pos="1.565 -0.782 0.395" quat="0 0 0 1" type="box" size="0.295 0.02 0.449"  material="black"/>
     <geom name="sink_area_left" pos="1.565 1.35 0.395" quat="0 0 0 1" type="box" size="0.295 0.02 0.43"  material="black"/>
 
-
-    <!-- <geom name="sink_top" size="0.2875 0.8 0.01" pos="1.565 0.525 0.84" quat="0 0 0 1" type="box" class="collision"/> -->
-    <!-- <geom pos="1.56 -0.17 0.8514" quat="0 0 0 1" type="mesh" mesh="Sink"/> -->
-    <!-- <geom name="sink_area_dish_washer_main" pos="1.555 0.2 0.47" quat="0 0 0 1" type="mesh" mesh="DishWasher" class="collision"/> -->
-    <!-- <geom pos="1.285 -0.4 0.765" quat="0 0 0 1" type="mesh" mesh="Panel_60"/> -->
-   
-    <!-- <body name="sink_area_trash_drawer_main" pos="1.555 -0.4 0.395" quat="0 0 0 1">
-      <inertial pos="0.185 0 0.125" quat="0.624471 0.331716 0.331716 0.624471" mass="2" diaginertia="2.0997 2.0997 2"/>
-      <joint name="sink_area_trash_drawer_main_joint" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
-      <geom type="mesh" mesh="Drawer_60_58"/>
-      <geom pos="0.37 0 0.25" type="mesh" mesh="Handle60"/>
-    </body>
-    <body name="sink_area_left_upper_drawer_main" pos="1.555 0.9 0.755" quat="0 0 0 1">
-      <inertial pos="0.17625 0 0.00875" quat="0.512246 0.487446 0.487446 0.512246" mass="2" diaginertia="2.06228 2.06228 2"/>
-      <joint name="sink_area_left_upper_drawer_main_joint" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
-      <geom type="mesh" mesh="Drawer_80_14"/>
-      <geom pos="0.3525 0 0.0175" type="mesh" mesh="Handle80"/>
-    </body>
-    <body name="sink_area_left_middle_drawer_main" pos="1.555 0.9 0.53" quat="0 0 0 1">
-      <inertial pos="0.17625 0 0.055" quat="0.569625 0.41896 0.41896 0.569625" mass="2" diaginertia="2.06818 2.06818 2"/>
-      <joint name="sink_area_left_middle_drawer_main_joint" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
-      <geom type="mesh" mesh="Drawer_80_29"/>
-      <geom pos="0.3525 0 0.11" type="mesh" mesh="Handle80"/>
-    </body> -->
-    <!-- <body name="sink_area_left_bottom_drawer_main" pos="1.555 0.9 0.23" quat="0 0 0 1">
-      <inertial pos="0.17625 0 0.055" quat="0.569625 0.41896 0.41896 0.569625" mass="2" diaginertia="2.06818 2.06818 2"/>
-      <joint name=" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.48"/>
-      <geom type="mesh" mesh="Drawer_80_29"/>
-      <geom pos="0.3525 0 0.11" type="mesh" mesh="Handle80"/>
-    </body> -->
     <!-- Check urdf and make this dishwash -->
     <!-- Check what does group, contype and conaffinity does -->
-    <body name="sink_area_dish_washer_main" pos="1.555 0.2 0.42" quat="0 0 0 1">
-        <geom name="dishwasher" type="mesh" mesh="DishWasher" quat="0.7071 0.7071 0 0" /> 
-        <geom name="dish_top" type="box" pos="-0.005 0 .32" size=".28 .275 .030" class="col"/>
-        <geom name="dish_bottom" type="box" pos="-0.005 0 -.394" size=".28 .275 .057" class="col"/>
-        <geom name="dish_back" type="box" pos="-0.275 0 -0.05" size=".015 .275 .4" class="col"/>
-        <geom name="dish_right" type="box" pos="-0.005 0.245 -0.05" size=".28 .031 .35" class="col"/> 
-        <geom name="dish_left" type="box" pos="-0.005 -0.245 -0.05" size=".28 .031 .35" class="col"/>
-    
-        <body name="sink_area_dish_washer_door"  pos="0.28 0 -0.305" quat="0.7071 -0.707107 0 0">
-          <inertial pos="0 0 0" mass="2" diaginertia="1 1 1"/>
-          <geom class="contact" name="dishwasher_door" type="mesh" mesh="DishWasherDoor" mass="1" /> 
-          <geom type="box" size="0.01 0.335 0.255" pos="0.01 -0.34 0.0" />
-          <joint name="sink_area_dish_washer_door_joint" type="hinge" axis="0 0 1" range="0 1.57" limited="true" damping="0.01" frictionloss="0.01"/>
-          <body name="sink_area_dish_washer_door_handle" pos="0.073 -0.58 0" quat="0.707107 -0.707107 0 0">
-            <geom class="contact" type="mesh" mesh="Handle60"/>
-          </body>
-            <!-- door col -->
-           <geom type="box" size="0.015 0.355 0.3" pos="0.005 -0.33 0.0" class="col" />
-           <!-- handle col -->
-           <geom type="capsule" size="0.0125 0.022" pos="0.05 -0.58 0.245" quat="0.7071 0 0.7071 0"   class="col" />
-           <geom type="capsule" size="0.0125 0.022" pos="0.05 -0.58 -0.245" quat="0.7071 0 0.7071 0"   class="col"/> 
-           <geom type="box" size="0.0082 0.0076 0.25" pos="0.073 -0.58 0"  class="col" /> 
-      </body> 
-    </body>
+  <body name="sink_area_dish_washer_main" pos="1.555 0.2 0.42" quat="0 0 0 1" childclass="viz_dishwasher">
+      <geom name="dishwasher" type="mesh" mesh="DishWasher" quat="0.7071 0.7071 0 0" /> 
+      <geom name="dish_top" type="box" pos="-0.005 0 .32" size=".28 .275 .030" class="col"/>
+      <geom name="dish_bottom" type="box" pos="-0.005 0 -.394" size=".28 .275 .057" class="col"/>
+      <geom name="dish_back" type="box" pos="-0.275 0 -0.05" size=".015 .275 .4" class="col"/>
+      <geom name="dish_right" type="box" pos="-0.005 0.245 -0.05" size=".28 .031 .35" class="col"/> 
+      <geom name="dish_left" type="box" pos="-0.005 -0.245 -0.05" size=".28 .031 .35" class="col"/>
+  
+      <body name="sink_area_dish_washer_door"  pos="0.28 0 -0.305" quat="0.7071 -0.707107 0 0">
+        <inertial pos="0 0 0" mass="1" diaginertia="1 1 1"/>
+        <geom class="contact" name="dishwasher_door" type="mesh" mesh="DishWasherDoor" mass="1" /> 
+        <geom type="box" size="0.01 0.335 0.255" pos="0.01 -0.34 0.0" />
+        <joint name="sink_area_dish_washer_door_joint" type="hinge" axis="0 0 1" range="0 1.57" limited="true" damping="0.01" frictionloss="0.01"/>
+        <body name="sink_area_dish_washer_door_handle" pos="0.073 -0.58 0" quat="0.707107 -0.707107 0 0">
+          <inertial pos="0 0 0" mass="0.5" diaginertia="1 1 1"/>
+          <!-- <geom class="contact" type="mesh" mesh="Handle60"/> -->
+          <geom type="capsule" size="0.0125 0.022" pos="-0.02 -0.25 0"  quat="0.7071 0 0.7071 0"/>
+          <geom type="capsule" size="0.0125 0.022" pos="-0.02 0.25 0" quat="0.7071 0 0.7071 0"/> 
+          <geom class="contact" type="box" size="0.0082 0.0076 0.25" quat="0.7071 0.7071 0 0"/>
+          <!-- <geom class="contact" type="box" size="0.0082 0.0076 0.25" pos="0.073 -0.58 0" quat="0.7071 0 0.7071 0"/> -->
+        </body>
+          <!-- door col -->
+        <geom type="box" size="0.015 0.355 0.3" pos="0.005 -0.33 0.0" class="col" />
+          <!-- handle col -->
+    </body> 
+  </body>
   </worldbody>
 </mujoco>

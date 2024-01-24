@@ -148,11 +148,11 @@
       </geometry>
     </visual>
     <collision>
-      <!-- <origin rpy="1.57079 0 0" xyz="0 0 0"/> -->
+      <origin rpy="1.57079 0 0" xyz="0 0 0"/>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <!-- <box size="0.015 0.015 0.5"/> -->
-        <mesh filename="package://mujoco_sim/model/partial_kitchen/assets/handle60_rot.stl"/>
+        <box size="0.0164 0.0152 0.5"/>
+        <!-- <mesh filename="package://mujoco_sim/model/partial_kitchen/assets/handle60_rot.stl"/> -->
       </geometry>
     </collision>
   </link>

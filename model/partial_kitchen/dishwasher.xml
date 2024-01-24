@@ -1,0 +1,59 @@
+<mujoco model="iai_door">
+  <!-- inertiafromgeom="true"  -->
+  <compiler angle="radian" meshdir="assets" autolimits="true"  balanceinertia="true" /> 
+  <option solver="Newton" integrator="RK4" >
+    <flag contact="enable" multiccd="enable"/>  
+    <!-- energy="disable"  -->
+  </option>
+
+  <asset>
+    <texture builtin="checker" height="512" name="texplane" rgb1=".2 .3 .4" rgb2=".1 .15 .2" type="2d" width="512" />
+    <material name="MatPlane" reflectance="0.05" shininess="0.01" specular="0.01" texrepeat="1 1" texture="texplane" texuniform="true" />
+  </asset>
+
+    <default>
+   <!-- Test the contact class solimp - harder contact setting friction="2 0.05 0.01" -->
+        <default class="contact">
+          <geom contype="3" condim="4" solimp="0.95 0.95 0.01" solref="0.01 1" />   
+        </default>
+        <default class="viz_dishwasher" >
+            <geom group="1"  contype="0" conaffinity="0"/>
+        </default>
+        <default class="col">
+            <geom rgba=".4 .8 .5 1" group="2" contype="1" conaffinity="0"/>
+        </default>
+    </default>
+    <worldbody>
+      <light pos="0 0 1000" castshadow="false" />
+      <geom name="ground_plane" type="plane" material="MatPlane" size="5 5 10" rgba="1 1 1 1"/>
+    </worldbody>
+    <!-- <worldbody>
+        <body name="stone"  pos="1.2 0.2 0" quat="0.707 0 0 0.707107">
+            <freejoint/>
+            <geom name="stone_box" type="box" size="0.25 0.25 0.25" rgba="0.43 0.1647 0.1647 1" condim="6" />
+            <inertial pos="0 0 0" mass="0.2024" diaginertia="4.369e-5 4.028e-5 1.407e-5"/>
+        </body>
+    </worldbody> -->
+    <worldbody>
+        <body name="sink_area_dish_washer_main" pos="1.555 0.2 0.4" quat="0 0 0 1" childclass="viz_dishwasher">
+            <geom name="dish_top" type="box" pos="-0.003 0.011 .352" size=".310 .27 .031" class="col"/>
+            <geom name="dish_bottom" type="box" pos="-0.003 0.009 -.37" size=".310 .267 .055" class="col"/>
+            <geom name="dish_back" type="box" pos="-0.24 0.01 -0.038" size=".0710 .267 .378" class="col"/>
+            <geom name="dish_right" type="box" pos="-0.004 -.226 -0.01" size=".310 .031 .378" class="col"/> 
+            <geom name="dish_left" type="box" pos="-0.004 0.25 -0.04" size=".310 .031 .378" class="col"/> 
+    
+           <body name="sink_area_dish_washer_door"  pos="0.312 0 -0.35" quat="0.7071 -0.707107 0 0">
+                <inertial pos="0 0 0" mass="2" diaginertia="1 1 1"/>
+                <geom type="box" size=".0210 .365 .270"  pos="0.013 -0.37 0.013" rgba=".1 .1 .1 1" class="col" />
+                <joint name="sink_area_dish_washer_door_joint" type="hinge" axis="0 0 1" range="0 1.57" limited="true" damping="0.1" frictionloss="0.01" stiffness="0.05"/>
+                <body name="sink_area_dish_washer_door_handle" pos="0.085 -0.58 0.01" quat="0.707107 -0.707107 0 0" >
+                    <inertial pos="0 0 0" mass="0.01" diaginertia="1 1 1"/>
+                    <geom type="capsule" size="0.015 0.23" quat="0.7071 0.7071 0 0" class="contact"/>
+                    <geom type="capsule" size=".015 .022" pos="-0.02 -0.24 0" quat="0.7071 0 0.7071 0" rgba=".50 .50 .50 1" class="col" />
+                    <geom type="capsule" size=".015 .022" pos="-0.02 0.24 0" quat="0.7071 0 0.7071 0" rgba=".50 .50 .50 1" class="col" />
+                </body>
+            </body> 
+        </body>
+
+    </worldbody>
+</mujoco>

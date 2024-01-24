@@ -1,0 +1,1069 @@
+<mujoco>
+ <option timestep="0.001" integrator="RK4" solver="CG" gravity="0 0 -9.81">
+    <flag sensornoise="disable" contact="enable"/>
+  	</option>
+
+    <default>
+        <geom condim="4" solimp="0.99 0.99 0" solref="0.01 1" friction="1 0.005 0.0001"/>
+    </default>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4" />
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2" />
+  </asset>
+
+  <worldbody>
+    <geom name="floor" size="0 0 .05" type="plane" material="grid" condim="3" />
+		<light diffuse="1 1 1" pos="2 0 4" dir="0 0 -1" />
+  </worldbody>
+
+  <worldbody>
+		<body name="table" pos="2 0 0.3">
+			<geom name="table_geom" type="box" size="0.2 0.5 0.3" rgba=".89 0.72 .56 1"/>
+		</body>
+
+		<body name="bowl" pos="2 0.4 0.7">
+			<freejoint/>
+			<geom name="bottom" type="box" size="0.1 0.1 0.05" pos="0 0 -0.04" rgba="1 0 0 1"/>
+
+			<geom name="side1" type="box" size="0.01 0.1 0.05" pos="0.09 0 0.04" rgba="1 0 0 1"/>
+			<geom name="side2" type="box" size="0.01 0.1 0.05" pos="-0.09 0 0.04" rgba="1 0 0 1"/>
+			<geom name="side3" type="box" size="0.1 0.01 0.05" pos="0 0.09 0.04" rgba="1 0 0 1"/>
+			<geom name="side4" type="box" size="0.1 0.01 0.05" pos="0 -0.09 0.04" rgba="1 0 0 1"/>
+		</body>
+
+      <body name="pot" pos="2 -0.2 0.7">
+				<freejoint/>
+				<inertial pos="0.0 0.0 0.0" mass="0.01" diaginertia="0.0008 0.0008 0.00015" />
+				<geom name="pot_bottom" type="box" size="0.1 0.1 0.03" pos="0 0 -0.04" rgba="1 0 1 1"/>
+
+				<geom name="pot_side1" type="box" size="0.01 0.1 0.03" pos="0.09 0 0.0" rgba="1 0 1 1" axisangle="0 1 0 0.3"/>
+				<geom name="pot_side2" type="box" size="0.01 0.1 0.03" pos="-0.09 0 0.0" rgba="1 0 1 1"/>
+				<geom name="pot_side3" type="box" size="0.1 0.01 0.03" pos="0 0.09 0.0" rgba="1 0 1 1"/>
+				<geom name="pot_side4" type="box" size="0.1 0.01 0.03" pos="0 -0.09 0.0" rgba="1 0 1 1"/>
+			<!-- <geom name="pot_side5" type="box" size="0.03 0.04 0.005" pos="0 -0.14 0.0" rgba="1 0 1 1"/>
+			<geom name="pot_side6" type="box" size="0.03 0.04 0.005" pos="0 0.14 0.0" rgba="1 0 1 1"/> -->
+
+      <!-- <geom name="pot_side7" type="box" size="0.005 0.04 0.01" pos="-0.025 -0.14 0.0" rgba="1 0 1 1"/>
+      <geom name="pot_side8" type="box" size="0.005 0.04 0.01" pos="-0.025 0.14 0.0" rgba="1 0 1 1"/> -->
+		</body>
+	</worldbody>
+
+  <worldbody>
+		<body name="sync_ball0" pos="2 -0.2 0.8">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball0" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball1" pos="2 -0.2 0.81">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball1" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball2" pos="2 -0.2 0.8200000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball2" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball3" pos="2 -0.2 0.8300000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball3" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball4" pos="2 -0.2 0.8400000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball4" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball5" pos="2 -0.2 0.8500000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball5" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball6" pos="2 -0.2 0.8600000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball6" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball7" pos="2 -0.2 0.8700000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball7" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball8" pos="2 -0.2 0.88">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball8" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball9" pos="2 -0.2 0.89">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball9" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball10" pos="2 -0.2 0.9">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball10" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball11" pos="2 -0.2 0.91">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball11" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball12" pos="2 -0.2 0.92">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball12" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball13" pos="2 -0.2 0.93">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball13" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball14" pos="2 -0.2 0.9400000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball14" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball15" pos="2 -0.2 0.9500000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball15" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball16" pos="2 -0.2 0.9600000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball16" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball17" pos="2 -0.2 0.9700000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball17" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball18" pos="2 -0.2 0.98">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball18" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball19" pos="2 -0.2 0.99">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball19" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball20" pos="2 -0.2 1.0">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball20" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball21" pos="2 -0.2 1.01">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball21" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball22" pos="2 -0.2 1.02">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball22" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball23" pos="2 -0.2 1.03">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball23" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball24" pos="2 -0.2 1.04">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball24" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball25" pos="2 -0.2 1.05">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball25" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball26" pos="2 -0.2 1.06">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball26" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball27" pos="2 -0.2 1.07">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball27" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball28" pos="2 -0.2 1.08">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball28" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball29" pos="2 -0.2 1.09">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball29" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball30" pos="2 -0.2 1.1">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball30" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball31" pos="2 -0.2 1.11">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball31" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball32" pos="2 -0.2 1.12">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball32" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball33" pos="2 -0.2 1.1300000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball33" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball34" pos="2 -0.2 1.1400000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball34" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball35" pos="2 -0.2 1.1500000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball35" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball36" pos="2 -0.2 1.1600000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball36" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball37" pos="2 -0.2 1.17">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball37" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball38" pos="2 -0.2 1.1800000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball38" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball39" pos="2 -0.2 1.19">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball39" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball40" pos="2 -0.2 1.2000000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball40" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball41" pos="2 -0.2 1.21">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball41" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball42" pos="2 -0.2 1.22">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball42" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball43" pos="2 -0.2 1.23">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball43" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball44" pos="2 -0.2 1.24">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball44" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball45" pos="2 -0.2 1.25">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball45" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball46" pos="2 -0.2 1.26">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball46" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball47" pos="2 -0.2 1.27">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball47" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball48" pos="2 -0.2 1.28">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball48" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball49" pos="2 -0.2 1.29">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball49" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball50" pos="2 -0.2 1.3">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball50" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball51" pos="2 -0.2 1.31">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball51" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball52" pos="2 -0.2 1.32">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball52" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball53" pos="2 -0.2 1.33">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball53" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball54" pos="2 -0.2 1.34">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball54" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball55" pos="2 -0.2 1.35">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball55" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball56" pos="2 -0.2 1.36">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball56" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball57" pos="2 -0.2 1.37">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball57" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball58" pos="2 -0.2 1.38">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball58" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball59" pos="2 -0.2 1.3900000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball59" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball60" pos="2 -0.2 1.4">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball60" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball61" pos="2 -0.2 1.4100000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball61" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball62" pos="2 -0.2 1.42">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball62" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball63" pos="2 -0.2 1.4300000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball63" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball64" pos="2 -0.2 1.44">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball64" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball65" pos="2 -0.2 1.4500000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball65" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball66" pos="2 -0.2 1.46">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball66" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball67" pos="2 -0.2 1.4700000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball67" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball68" pos="2 -0.2 1.48">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball68" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball69" pos="2 -0.2 1.4900000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball69" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball70" pos="2 -0.2 1.5">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball70" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball71" pos="2 -0.2 1.51">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball71" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball72" pos="2 -0.2 1.52">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball72" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball73" pos="2 -0.2 1.53">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball73" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball74" pos="2 -0.2 1.54">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball74" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball75" pos="2 -0.2 1.55">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball75" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball76" pos="2 -0.2 1.56">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball76" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball77" pos="2 -0.2 1.57">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball77" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball78" pos="2 -0.2 1.58">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball78" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball79" pos="2 -0.2 1.59">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball79" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball80" pos="2 -0.2 1.6">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball80" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball81" pos="2 -0.2 1.61">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball81" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball82" pos="2 -0.2 1.62">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball82" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball83" pos="2 -0.2 1.6300000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball83" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball84" pos="2 -0.2 1.6400000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball84" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball85" pos="2 -0.2 1.65">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball85" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball86" pos="2 -0.2 1.6600000000000001">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball86" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball87" pos="2 -0.2 1.67">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball87" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball88" pos="2 -0.2 1.6800000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball88" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball89" pos="2 -0.2 1.69">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball89" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball90" pos="2 -0.2 1.7000000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball90" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball91" pos="2 -0.2 1.71">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball91" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball92" pos="2 -0.2 1.7200000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball92" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball93" pos="2 -0.2 1.73">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball93" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball94" pos="2 -0.2 1.7400000000000002">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball94" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball95" pos="2 -0.2 1.75">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball95" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball96" pos="2 -0.2 1.76">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball96" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball97" pos="2 -0.2 1.77">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball97" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball98" pos="2 -0.2 1.78">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball98" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+		<body name="sync_ball99" pos="2 -0.2 1.79">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.0001" diaginertia="0.000000001 0.000000001 0.000000001" />
+			<geom name="ball99" type="sphere" size="0.005" rgba="1 0 0 1"/>
+		</body>
+    <body name="big_ball" pos="2 -0.25 0.8">
+			<freejoint/> <inertial pos="0.0 0.0 0.0" mass="0.01" diaginertia="0.0000001 0.0000001 0.0000001" />
+			<geom name="big_ball" type="sphere" size="0.015" rgba="0 1 0 1"/>
+		</body>
+	</worldbody>
+
+
+<contact> 
+ <pair geom1="ball0" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball1" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball2" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball3" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball4" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball5" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball6" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball7" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball8" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball9" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball10" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball11" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball12" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball13" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball14" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball15" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball16" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball17" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball18" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball19" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball20" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball21" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball22" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball23" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball24" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball25" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball26" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball27" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball28" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball29" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball30" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball31" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball32" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball33" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball34" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball35" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball36" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball37" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball38" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball39" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball40" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball41" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball42" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball43" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball44" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball45" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball46" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball47" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball48" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball49" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball50" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball51" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball52" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball53" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball54" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball55" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball56" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball57" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball58" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball59" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball60" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball61" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball62" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball63" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball64" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball65" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball66" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball67" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball68" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball69" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball70" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball71" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball72" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball73" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball74" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball75" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball76" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball77" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball78" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball79" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball80" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball81" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball82" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball83" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball84" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball85" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball86" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball87" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball88" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball89" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball90" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball91" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball92" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball93" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball94" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball95" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball96" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball97" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball98" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball99" geom2="pot_bottom" friction="0.5 0.005 0.0001"/> 
+</contact> 
+
+<contact> 
+ <pair geom1="ball0" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball1" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball2" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball3" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball4" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball5" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball6" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball7" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball8" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball9" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball10" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball11" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball12" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball13" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball14" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball15" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball16" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball17" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball18" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball19" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball20" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball21" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball22" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball23" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball24" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball25" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball26" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball27" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball28" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball29" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball30" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball31" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball32" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball33" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball34" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball35" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball36" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball37" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball38" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball39" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball40" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball41" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball42" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball43" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball44" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball45" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball46" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball47" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball48" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball49" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball50" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball51" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball52" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball53" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball54" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball55" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball56" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball57" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball58" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball59" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball60" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball61" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball62" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball63" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball64" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball65" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball66" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball67" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball68" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball69" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball70" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball71" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball72" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball73" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball74" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball75" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball76" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball77" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball78" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball79" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball80" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball81" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball82" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball83" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball84" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball85" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball86" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball87" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball88" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball89" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball90" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball91" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball92" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball93" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball94" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball95" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball96" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball97" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball98" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="ball99" geom2="pot_side1" friction="0.5 0.005 0.0001"/> 
+</contact> 
+
+
+<contact> 
+ <pair geom1="big_ball" geom2="pot_side1" friction="2 0.005 0.0001"/> 
+</contact> 
+<contact> 
+ <pair geom1="big_ball" geom2="pot_bottom" friction="2 0.005 0.0001"/> 
+</contact> 
+</mujoco>

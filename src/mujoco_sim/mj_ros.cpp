@@ -545,6 +545,10 @@ void MjRos::init()
     reset_object_server = n.advertiseService("/mujoco/reset_object_joint_state", &MjRos::reset_object_service, this);
     ROS_INFO("Started [%s] service.", reset_object_server.getService().c_str());
 
+    // service to get contact points and contact force
+    contact_server = n.advertiseService("/mujoco/contacts", &MjRos::contact_service, this);
+    ROS_INFO("Started [%s] service.", reset_object_server.getService().c_str());
+
     spawn_objects_server = n.advertiseService("/mujoco/spawn_objects", &MjRos::spawn_objects_service, this);
     ROS_INFO("Started [%s] service.", spawn_objects_server.getService().c_str());
 
