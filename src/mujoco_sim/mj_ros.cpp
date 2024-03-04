@@ -47,6 +47,7 @@ static std::map<EObjectType, double> pub_joint_states_rate;
 static double pub_base_pose_rate;
 static double pub_sensor_data_rate;
 static double spawn_and_destroy_objects_rate;
+static double pub_contact_data_rate;
 static int spawn_object_count_per_cycle;
 
 static std::map<EObjectType, visualization_msgs::Marker> marker;
@@ -466,6 +467,10 @@ void MjRos::init()
     {
         pub_sensor_data_rate = 60.0;
     }
+     if (!ros::param::get("~pub_contact_data_rate", pub_contact_data_rate))
+    {
+        pub_contact_data_rate = 60.0;
+    }
     if (!ros::param::get("~spawn_and_destroy_objects_rate", spawn_and_destroy_objects_rate))
     {
         spawn_and_destroy_objects_rate = 600.0;
@@ -546,8 +551,8 @@ void MjRos::init()
     ROS_INFO("Started [%s] service.", reset_object_server.getService().c_str());
 
     // service to get contact points and contact force
-    contact_server = n.advertiseService("/mujoco/contacts", &MjRos::contact_service, this);
-    ROS_INFO("Started [%s] service.", reset_object_server.getService().c_str());
+    // contact_server = n.advertiseService("/mujoco/contacts", &MjRos::contact_service, this);
+    // ROS_INFO("Started [%s] service.", reset_object_server.getService().c_str());
 
     spawn_objects_server = n.advertiseService("/mujoco/spawn_objects", &MjRos::spawn_objects_service, this);
     ROS_INFO("Started [%s] service.", spawn_objects_server.getService().c_str());
@@ -571,6 +576,7 @@ void MjRos::init()
     joint_states_pub[EObjectType::World] = n.advertise<sensor_msgs::JointState>("/mujoco/world_joint_states", 0);
     joint_states_pub[EObjectType::SpawnedObject] = n.advertise<sensor_msgs::JointState>("/mujoco/object_joint_states", 0);
     sensors_pub = n.advertise<geometry_msgs::Vector3Stamped>("/mujoco/sensors_3D", 0);
+    contact_pub = n.advertise<mujoco_msgs::ContactInfo>("/mujoco/contact_data", 0);
 
     reset_robot();
 }
@@ -623,6 +629,7 @@ void MjRos::setup_publishers()
     std::thread ros_thread4(&MjRos::publish_joint_states, this, EObjectType::None);
     std::thread ros_thread5(&MjRos::publish_base_pose, this);
     std::thread ros_thread6(&MjRos::publish_sensor_data, this);
+    std::thread ros_thread7(&MjRos::publish_contact_data, this);
 
     ros_thread1.join();
     ros_thread2.join();
@@ -630,6 +637,7 @@ void MjRos::setup_publishers()
     ros_thread4.join();
     ros_thread5.join();
     ros_thread6.join();
+    ros_thread7.join();
 }
 
 void MjRos::setup_service_servers()
@@ -1982,6 +1990,50 @@ void MjRos::publish_sensor_data()
         ros::spinOnce();
         loop_rate.sleep();
     }
+}
+
+void MjRos::publish_contact_data()
+{   
+    // Publish contact data only for free bodies. checks if the geom ids belong to free bodies
+    if (pub_contact_data_rate < 1E-9)
+    {
+        return;
+    }
+
+    ros::Rate loop_rate(pub_contact_data_rate);
+    std_msgs::Header header;
+    mujoco_msgs::ContactInfo contact_info;
+    mujoco_msgs::ContactState contact_state;
+
+    while(ros::ok())
+    {
+        header.stamp = ros::Time::now();
+        contact_info.contact_states.clear();
+        for (int i = 0; i < d->ncon; i++)
+        {   
+          
+            if(std::find(MjSim::geom_ids.begin(), MjSim::geom_ids.end(), d->contact[i].geom[0]) != MjSim::geom_ids.end()
+                && std::find(MjSim::geom_ids.begin(), MjSim::geom_ids.end(), d->contact[i].geom[1]) != MjSim::geom_ids.end())
+            {
+                header.seq += 1;
+           
+                contact_state.contact_body1 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[0]]);
+                contact_state.contact_body2 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[1]]);
+                contact_state.contact_point.x = d->contact[i].pos[0];
+                contact_state.contact_point.y = d->contact[i].pos[1];
+                contact_state.contact_point.z = d->contact[i].pos[2];
+
+                contact_info.header = header;
+                contact_info.contact_states.push_back(contact_state);
+            }   
+        }
+
+        contact_pub.publish(contact_info);
+
+        ros::spinOnce();
+        loop_rate.sleep();
+    }
+
 }
 
 void MjRos::add_marker(const int body_id, const EObjectType object_type)

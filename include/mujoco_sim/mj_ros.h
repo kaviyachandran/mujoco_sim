@@ -28,6 +28,8 @@
 #include "mujoco_msgs/ObjectStatus.h"
 #include "mujoco_msgs/SpawnObject.h"
 #include "mujoco_msgs/ResetObject.h"
+#include "mujoco_msgs/ContactState.h"
+#include "mujoco_msgs/ContactInfo.h"
 
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
@@ -128,6 +130,8 @@ private:
 
     void publish_sensor_data();
 
+    void publish_contact_data();
+
     void spawn_and_destroy_objects();
 
 private:
@@ -194,6 +198,8 @@ private:
     std::map<EObjectType, ros::Publisher> joint_states_pub;
 
     ros::Publisher sensors_pub;
+
+    ros::Publisher contact_pub;
 
     tf2_ros::TransformBroadcaster br;
 

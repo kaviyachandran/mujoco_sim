@@ -59,6 +59,10 @@ std::set<std::string> MjSim::spawned_object_body_names;
 // Fix bug from m->geom_pos and m->geom_quat
 std::map<int, std::vector<mjtNum>> MjSim::geom_pose;
 
+std::map<int, std::string> MjSim::free_bodies;
+
+std::vector<int> MjSim::geom_ids;
+
 bool MjSim::disable_gravity = true;
 
 MjSim::~MjSim()
@@ -956,6 +960,23 @@ static void init_references()
 	}
 }
 
+void MjSim::set_free_bodies(const std::string& object_to_exclude)
+{
+	for (int i =0; i<m->nbody; i++)
+	{	
+		std::string body_name = mj_id2name(m, mjtObj::mjOBJ_BODY, i);
+		size_t found_str = body_name.find(object_to_exclude);
+		if(m->body_jntnum[i] == 1 && m->jnt_type[m->body_jntadr[i]] == mjtJoint::mjJNT_FREE && found_str == std::string::npos)
+		{
+			MjSim::free_bodies.emplace(i, body_name);
+			
+			std::vector<int> get_ids(m->body_geomnum[i]);
+			std::generate(get_ids.begin(), get_ids.end(), [n = m->body_geomadr[i]]() mutable { return n++; });
+			MjSim::geom_ids.insert(MjSim::geom_ids.end(), get_ids.begin(), get_ids.end());
+		}
+	}
+}
+
 void MjSim::init()
 {
 	init_tmp();
@@ -964,6 +985,8 @@ void MjSim::init()
 	set_joint_names();
 	init_sensors();
 	init_references();
+	const std::string& exclude = "ball";
+	set_free_bodies(exclude);
 	sim_start = d->time;
 }
 

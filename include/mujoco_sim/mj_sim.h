@@ -64,6 +64,8 @@ public:
      */
     void set_odom_vels();
 
+    void set_free_bodies(const std::string &exclude_objects);
+
 public:
     /**
      * @brief Spawn new data from file
@@ -115,6 +117,10 @@ public:
 
     // Fix bug from m->geom_pos and m->geom_quat
     static std::map<int, std::vector<mjtNum>> geom_pose;
+
+    static std::map<int, std::string> free_bodies;
+
+    static std::vector<int> geom_ids;
 
 private:
     MjSim() = default;
