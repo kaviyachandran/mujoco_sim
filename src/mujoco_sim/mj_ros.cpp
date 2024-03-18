@@ -2012,13 +2012,15 @@ void MjRos::publish_contact_data()
         for (int i = 0; i < d->ncon; i++)
         {   
           
-            if(std::find(MjSim::geom_ids.begin(), MjSim::geom_ids.end(), d->contact[i].geom[0]) != MjSim::geom_ids.end()
-                && std::find(MjSim::geom_ids.begin(), MjSim::geom_ids.end(), d->contact[i].geom[1]) != MjSim::geom_ids.end())
+            if(std::find(MjSim::geom_ids.begin(), MjSim::geom_ids.end(), d->contact[i].geom1) != MjSim::geom_ids.end()
+                && std::find(MjSim::geom_ids.begin(), MjSim::geom_ids.end(), d->contact[i].geom2) != MjSim::geom_ids.end())
             {
                 header.seq += 1;
-           
-                contact_state.contact_body1 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[0]]);
-                contact_state.contact_body2 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[1]]);
+                // below is for version 3.1.1. ALso fix lines 2015 and 2016
+                // contact_state.contact_body1 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[0]]);
+                // contact_state.contact_body2 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[1]]);
+                contact_state.contact_body1 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom1]);
+                contact_state.contact_body2 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom2]);
                 contact_state.contact_point.x = d->contact[i].pos[0];
                 contact_state.contact_point.y = d->contact[i].pos[1];
                 contact_state.contact_point.z = d->contact[i].pos[2];
