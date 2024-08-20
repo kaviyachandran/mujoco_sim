@@ -1994,7 +1994,8 @@ void MjRos::publish_sensor_data()
 
 void MjRos::publish_contact_data()
 {   
-    // Publish contact data only for free bodies. checks if the geom ids belong to free bodies
+    // Publish contact data only for free bodies. checks if the geom ids belong to free bodies. 
+    // Does geom[0] and geom[1] correspond to geom_ids? 
     if (pub_contact_data_rate < 1E-9)
     {
         return;
@@ -2004,23 +2005,51 @@ void MjRos::publish_contact_data()
     std_msgs::Header header;
     mujoco_msgs::ContactInfo contact_info;
     mujoco_msgs::ContactState contact_state;
+    std::string exclude_objects = "sync_ball, table, world";
 
     while(ros::ok())
     {
         header.stamp = ros::Time::now();
         contact_info.contact_states.clear();
+        std::cout << "no of cotnacts " << d->ncon << std::endl;
+        // for(int i=0; i< MjSim::geom_ids.size(); i++)
+        // {
+        //     std::cout << "free obj " << mj_id2name(m, mjOBJ_GEOM, i)  << std::endl;
+        // }
+
         for (int i = 0; i < d->ncon; i++)
         {   
-          
-            if(std::find(MjSim::geom_ids.begin(), MjSim::geom_ids.end(), d->contact[i].geom1) != MjSim::geom_ids.end()
-                && std::find(MjSim::geom_ids.begin(), MjSim::geom_ids.end(), d->contact[i].geom2) != MjSim::geom_ids.end())
-            {
+            // std::cout << "free obj " << MjSim::geom_ids.size() << std::endl;
+            // std::cout << "contact " << i << std::endl;
+            // if(d->contact[i].geom[0] != None  && d->contact[i].geom[1] != None )
+            // {
+            //     std::cout << "contact geom:  " <<  " geom1: " << d->contact[i].geom[0] << " geom2: " << d->contact[i].geom[1] << std::endl;
+            // }
+            // else
+            // {
+            //     std::cout << "it was none " << std::endl;
+            // }
+            //std::cout << "contact names:  " <<  " geom1: " << mj_id2name(m, mjOBJ_GEOM, d->contact[i].geom[0]) << " geom2: " << mj_id2name(m, mjOBJ_GEOM, d->contact[i].geom[1]) << std::endl;
+            // std::string body_name = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[0]]); // mj_id2name(m, mjOBJ_BODY, m->geom_bodyid(d->contact[i].geom[0]));
+            // std::string body_name1 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[1]]);
+            // int body_id = m->geom_bodyid[d->contact[i].geom[0]];
+            std::string body_name = mj_id2name(m, mjOBJ_BODY, m->geom_bodyid[d->contact[i].geom[0]]);
+            std::string body_name1 = mj_id2name(m, mjOBJ_BODY, m->geom_bodyid[d->contact[i].geom[1]]);
+            std::size_t found = exclude_objects.find(body_name);
+            std::size_t found1 = exclude_objects.find(body_name1);
+
+            std::cout << "namess " << body_name << " " << body_name1 << std::endl;
+
+            // Checking if the body names are cups. We are only interested in contact between cups
+            if(found == std::string::npos && found1 == std::string::npos)
+            {   
+                // std::cout << "I am innn " << std::endl;
                 header.seq += 1;
                 // below is for version 3.1.1. ALso fix lines 2015 and 2016
-                // contact_state.contact_body1 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[0]]);
-                // contact_state.contact_body2 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom[1]]);
-                contact_state.contact_body1 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom1]);
-                contact_state.contact_body2 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom2]);
+                contact_state.contact_body1 = body_name;
+                contact_state.contact_body2 = body_name1;
+                // contact_state.contact_body1 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom1]);
+                // contact_state.contact_body2 = MjSim::free_bodies.at(m->geom_bodyid[d->contact[i].geom2]);
                 contact_state.contact_point.x = d->contact[i].pos[0];
                 contact_state.contact_point.y = d->contact[i].pos[1];
                 contact_state.contact_point.z = d->contact[i].pos[2];
