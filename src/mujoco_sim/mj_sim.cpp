@@ -966,6 +966,7 @@ void MjSim::set_free_bodies(const std::string& object_to_exclude)
 	{	
 		std::string body_name = mj_id2name(m, mjtObj::mjOBJ_BODY, i);
 		size_t found_str = body_name.find(object_to_exclude);
+		//  free bodies only contain destination_cup
 		if(m->body_jntnum[i] == 1 && m->jnt_type[m->body_jntadr[i]] == mjtJoint::mjJNT_FREE && found_str == std::string::npos)
 		{
 			MjSim::free_bodies.emplace(i, body_name);

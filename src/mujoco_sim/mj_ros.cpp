@@ -2011,7 +2011,7 @@ void MjRos::publish_contact_data()
     {
         header.stamp = ros::Time::now();
         contact_info.contact_states.clear();
-        std::cout << "no of cotnacts " << d->ncon << std::endl;
+        // std::cout << "no of cotnacts " << d->ncon << std::endl;
         // for(int i=0; i< MjSim::geom_ids.size(); i++)
         // {
         //     std::cout << "free obj " << mj_id2name(m, mjOBJ_GEOM, i)  << std::endl;
@@ -2038,7 +2038,7 @@ void MjRos::publish_contact_data()
             std::size_t found = exclude_objects.find(body_name);
             std::size_t found1 = exclude_objects.find(body_name1);
 
-            std::cout << "namess " << body_name << " " << body_name1 << std::endl;
+            // std::cout << "namess " << body_name << " " << body_name1 << std::endl;
 
             // Checking if the body names are cups. We are only interested in contact between cups
             if(found == std::string::npos && found1 == std::string::npos)
