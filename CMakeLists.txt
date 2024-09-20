@@ -11,9 +11,11 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  sensor_msgs
   mujoco_msgs
   roslib
   controller_manager
+  image_transport
   tf2_ros
   urdf
 )
@@ -54,8 +56,8 @@ add_custom_target(${MUJOCO} DEPENDS ${MUJOCO}_build)
 catkin_package(
   INCLUDE_DIRS include/mujoco_sim
   # LIBRARIES
-  CATKIN_DEPENDS roscpp rospy std_msgs roslib
-  # DEPENDS 
+  CATKIN_DEPENDS roscpp rospy std_msgs roslib image_transport
+  #DEPENDS image_transport
 )
 
 ###########
@@ -100,6 +102,7 @@ target_link_libraries(${MUJOCO_SIM_HEADLESS_NODE}
   tinyxml2
   zmq
   jsoncpp
+  image_transport
 )
 
 set(MUJOCO_SIM_NODE mujoco_sim_node)
@@ -120,6 +123,7 @@ target_link_libraries(${MUJOCO_SIM_NODE}
   jsoncpp
   glfw
   GL
+  image_transport
 )
 
 add_executable(state_server_node src/state_server.cpp)
