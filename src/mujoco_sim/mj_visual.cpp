@@ -22,7 +22,10 @@
 
 #include "GL/gl.h"
 
-mjvCamera MjVisual::cam;  // abstract camera
+#include <iostream>
+
+mjvCamera MjVisual::cam; // abstract camera
+mjvCamera MjVisual::user_cam;
 mjvOption MjVisual::opt;  // visualization options
 mjvScene MjVisual::scn;   // abstract scene
 mjrContext MjVisual::con; // custom GPU context
@@ -53,7 +56,7 @@ MjVisual::~MjVisual()
     terminate();
 }
 
-void MjVisual::init()
+void MjVisual::init(ros::NodeHandle &n)
 {
     // init GLFW
     if (!glfwInit())
@@ -65,12 +68,26 @@ void MjVisual::init()
     glfwSwapInterval(1);
 
     // initialize visualization data structures
-    mjv_defaultCamera(&cam);
+    mjv_defaultCamera(&user_cam);
     mjv_defaultOption(&opt);
     mjv_defaultScene(&scn);
     mjr_defaultContext(&con);
     mjv_makeScene(m, &scn, 2000);              // space for 2000 objects
     mjr_makeContext(m, &con, mjFONTSCALE_150); // model-specific context
+
+    image_height = 640;
+    image_width = 480;
+
+    vector_size = 3 * image_height * image_width;
+    rgb.resize(vector_size);
+
+    user_cam.type = mjCAMERA_FIXED;
+    user_cam.fixedcamid = mj_name2id(m, mjOBJ_CAMERA, "head_cam");
+    image_data->header.frame_id = "head_cam";
+    image_data->height = image_height;
+    image_data->width = image_width;
+    image_data->encoding = sensor_msgs::image_encodings::RGB8;
+    image_data->step = image_width * 3;
 
     // install GLFW mouse and keyboard callbacks
     glfwSetCursorPosCallback(window, &MjVisual::mouse_move);
@@ -84,6 +101,9 @@ void MjVisual::init()
     cam.lookat[0] = arr_view[3];
     cam.lookat[1] = arr_view[4];
     cam.lookat[2] = arr_view[5];
+
+    image_transport::ImageTransport image_transport(n);
+    image_pub = image_transport.advertise("/mujoco/rgb_data", 0);
 }
 
 void MjVisual::mouse_move(GLFWwindow *window, double xpos, double ypos)
@@ -137,6 +157,19 @@ bool MjVisual::is_window_closed()
 {
     return glfwWindowShouldClose(window);
 }
+// get the data and assign it to a pointer
+// cast the data pointed to by the pointer to uint8
+void MjVisual::publish_image_data(unsigned char* rgb_data)
+{
+    ros::Rate loop_rate(30);
+    image_data->data.resize(vector_size);
+
+    memcpy(reinterpret_cast<char *>(&image_data->data[0]), rgb_data, vector_size);
+
+    image_pub.publish(*image_data);
+
+    return;
+}
 
 void MjVisual::render(double sim_time, double ros_time)
 {
@@ -162,6 +195,10 @@ void MjVisual::render(double sim_time, double ros_time)
     mjv_updateScene(m, d, &opt, NULL, &cam, mjCAT_ALL, &scn);
 
     mjr_render(viewport, &scn, &con);
+
+    mjv_updateScene(m, d, &opt, NULL, &user_cam, mjCAT_ALL, &scn);
+    mjr_readPixels(rgb.data(), NULL, mjrRect{0, 0, image_width, image_height}, &con);
+    publish_image_data(rgb.data());
 
     // print simulation time
     mjrRect rect1 = {0, viewport.height - 50, 300, 50};

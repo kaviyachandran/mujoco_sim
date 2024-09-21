@@ -27,8 +27,6 @@
 #include <controller_manager_msgs/ControllerState.h>
 #include <controller_manager_msgs/ListControllers.h>
 #include <controller_manager_msgs/SwitchController.h>
-#include <sensor_msgs/image_encodings.h>
-#include <sensor_msgs/Image.h>
 #include <numeric>
 #include <ros/package.h>
 #include <tf2/LinearMath/Quaternion.h>
@@ -589,9 +587,6 @@ void MjRos::init()
     sensors_pub = n.advertise<geometry_msgs::Vector3Stamped>("/mujoco/sensors_3D", 0);
     contact_pub = n.advertise<mujoco_msgs::ContactInfo>("/mujoco/contact_data", 0);
     
-    image_transport::ImageTransport image_transport(n);
-    image_pub = image_transport.advertise("/mujoco/rgb_data", 0);
-
     reset_robot();
 }
 
@@ -644,7 +639,6 @@ void MjRos::setup_publishers()
     std::thread ros_thread5(&MjRos::publish_base_pose, this);
     std::thread ros_thread6(&MjRos::publish_sensor_data, this);
     std::thread ros_thread7(&MjRos::publish_contact_data, this);
-    std::thread ros_thread8(&MjRos::publish_image_data, this);
 
     ros_thread1.join();
     ros_thread2.join();
@@ -653,7 +647,6 @@ void MjRos::setup_publishers()
     ros_thread5.join();
     ros_thread6.join();
     ros_thread7.join();
-    ros_thread8.join();
 }
 
 void MjRos::setup_service_servers()
@@ -2081,45 +2074,6 @@ void MjRos::publish_contact_data()
         loop_rate.sleep();
     }
 
-}
-
-void MjRos::publish_image_data()
-{
-    ros::Rate loop_rate(camera_param->frequency);
-    
-    mjvCamera user_defined_cam;
-    user_defined_cam.type = mjCAMERA_FIXED;
-    user_defined_cam.fixedcamid = mj_name2id(m, mjOBJ_CAMERA, "head_cam");
-    
-    mjvOption options;
-    mjv_defaultOption(&options);
-
-    mjrContext context;
-    mjr_defaultContext(&context);
-    mjr_makeContext(m, &context, mjFONTSCALE_150);
-
-    // Create and initialize the MuJoCo scene
-    mjvScene scene;
-    mjv_defaultScene(&scene);
-    mjv_makeScene(m, &scene, 2000);  // Scene buffer size
-
-    mjv_updateScene(m, d, &options, NULL,  &user_defined_cam, mjCAT_ALL, &scene);
-
-    std::shared_ptr<sensor_msgs::Image> image_data = std::make_shared<sensor_msgs::Image>();
-    image_data->header.frame_id = "head_cam";
-    image_data->height = camera_param->height;
-    image_data->width = camera_param->width;
-    image_data->encoding = sensor_msgs::image_encodings::RGB8;
-    image_data->step = camera_param->width*3;
-    size_t size = image_data->step * image_data->height;
-    // initialize an array with needed size
-    std::vector<unsigned char> rgb(size);
-    mjr_readPixels(rgb.data(), NULL, mjrRect{0, 0, camera_param->width, camera_param->height}, &context);
-
-    image_pub.publish(*image_data);
-
-    ros::spinOnce();
-    loop_rate.sleep();
 }
 
 void MjRos::add_marker(const int body_id, const EObjectType object_type)

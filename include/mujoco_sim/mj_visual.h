@@ -20,6 +20,11 @@
 
 #pragma once
 
+#include <image_transport/image_transport.h>
+#include <sensor_msgs/image_encodings.h>
+#include <sensor_msgs/Image.h>
+#include "ros/ros.h"
+
 #include "mj_sim.h"
 
 #include <GLFW/glfw3.h>
@@ -41,7 +46,7 @@ public:
      * @brief Initialize the window
      *
      */
-    void init();
+    void init(ros::NodeHandle &image_node);
 
     /**
      * @brief mouse button callback
@@ -91,6 +96,10 @@ public:
      */
     void terminate();
 
+    
+    void publish_image_data(unsigned char* rgb);
+
+
 public:
     GLFWwindow *window = NULL;
 
@@ -101,6 +110,7 @@ private:
 
 private:
     static mjvCamera cam;  // abstract camera
+    static mjvCamera user_cam; // user-defined camera
     static mjvOption opt;  // visualization options
     static mjvScene scn;   // abstract scene
     static mjrContext con; // custom GPU context
@@ -111,4 +121,12 @@ private:
     static bool button_right;
     static double lastx;
     static double lasty;
+
+    size_t vector_size;
+    int image_height;
+    int image_width;
+    std::vector<unsigned char> rgb;
+
+    image_transport::Publisher image_pub;
+    std::shared_ptr<sensor_msgs::Image> image_data = std::make_shared<sensor_msgs::Image>();
 };

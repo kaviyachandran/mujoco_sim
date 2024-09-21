@@ -36,7 +36,6 @@
 #include <geometry_msgs/Vector3Stamped.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/JointState.h>
-#include <image_transport/image_transport.h>
 #include <std_srvs/Trigger.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2_ros/transform_broadcaster.h>
@@ -126,8 +125,6 @@ public:
 
 public:
     static ros::Time ros_start;
-
-
     
 private:
     MjRos() = default; // Singleton
@@ -148,8 +145,6 @@ private:
     void publish_sensor_data();
 
     void publish_contact_data();
-
-    void publish_image_data();
 
     void spawn_and_destroy_objects();
 
@@ -213,8 +208,6 @@ private:
     ros::Publisher marker_array_pub;
 
     ros::Publisher object_state_array_pub;
-
-    image_transport::Publisher image_pub;
 
     std::map<EObjectType, ros::Publisher> joint_states_pub;
 

@@ -5,6 +5,7 @@
         <mesh name="bowl_bottom" file="bowl/stl/bowl_bottom.stl" />
     </asset>
     <worldbody>
+        <camera name="head_cam" pos="0 0 8" />
         <body name="bowl" pos="0 0 0">
             <body name="bowl_body" pos="0 0 0">
                 <geom name="bowl_bottom" type="mesh" mesh="bowl_bottom" rgba="1 1 1 1" />

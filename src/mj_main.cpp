@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 
 #ifdef VISUAL
     ROS_INFO("Initializing OpenGL...");
-    mj_visual.init();
+    mj_visual.init(n);
     glfwSetKeyCallback(mj_visual.window, keyboard);
     ROS_INFO("Initialized OpenGL successfully.");
 #endif
@@ -219,7 +219,7 @@ int main(int argc, char **argv)
             break;
         }
 
-        if (d->time - sim_step_start > 1.0 / 60.0)
+        if (d->time - sim_step_start > 1.0 / 30.0)
         {
             mj_visual.render(d->time - MjSim::sim_start, (ros::Time::now() - MjRos::ros_start).toSec());
             sim_step_start = d->time;
