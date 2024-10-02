@@ -83,6 +83,8 @@ void MjVisual::init(ros::NodeHandle &n)
 
     user_cam.type = mjCAMERA_FIXED;
     user_cam.fixedcamid = mj_name2id(m, mjOBJ_CAMERA, "head_cam");
+    std::cout << "camera id: " << user_cam.fixedcamid << std::endl;
+    //std::cout << "cam pos: " << m->cam_pos[user_cam.fixedcamid][0] << std::endl;
     image_data->header.frame_id = "head_cam";
     image_data->height = image_height;
     image_data->width = image_width;
@@ -102,8 +104,25 @@ void MjVisual::init(ros::NodeHandle &n)
     cam.lookat[1] = arr_view[4];
     cam.lookat[2] = arr_view[5];
 
+    user_cam.lookat[0] = 2;
+    user_cam.lookat[1] = -0.6;
+    user_cam.lookat[2] = 0.5;
+
     image_transport::ImageTransport image_transport(n);
     image_pub = image_transport.advertise("/mujoco/rgb_data", 0);
+
+
+    int body_id = m->cam_bodyid[user_cam.fixedcamid];
+	std::string parent_frame = mj_id2name(m, mjOBJ_BODY, body_id);
+	std::cout << "Creating camera frames for cam with parent link " << parent_frame << std::endl;
+    // TODO : print all the values
+	// geometry_msgs::TransformStamped cam_transform;
+	// cam_transform.header.stamp            = ros::Time::now();
+	// cam_transform.header.frame_id         = parent_frame;
+	// cam_transform.child_frame_id          = cam_name + "_link";
+	std::cout << "cam position :" << m->cam_pos[user_cam.fixedcamid * 3] << ", " << m->cam_pos[user_cam.fixedcamid * 3 + 1] << ", " << m->cam_pos[user_cam.fixedcamid * 3 + 2] << std::endl;
+
+	std::cout << "cam quat: " << m->cam_quat[user_cam.fixedcamid * 4] << ", " << m->cam_quat[user_cam.fixedcamid * 4 + 1] << ", " << m->cam_quat[user_cam.fixedcamid * 4 + 2] << m->cam_quat[user_cam.fixedcamid * 4 + 3] << std::endl;
 }
 
 void MjVisual::mouse_move(GLFWwindow *window, double xpos, double ypos)
@@ -194,11 +213,12 @@ void MjVisual::render(double sim_time, double ros_time)
     // update scene and render
     mjv_updateScene(m, d, &opt, NULL, &cam, mjCAT_ALL, &scn);
 
-    mjr_render(viewport, &scn, &con);
+    // mjr_render(viewport, &scn, &con);
 
     mjv_updateScene(m, d, &opt, NULL, &user_cam, mjCAT_ALL, &scn);
     mjr_readPixels(rgb.data(), NULL, mjrRect{0, 0, image_width, image_height}, &con);
     publish_image_data(rgb.data());
+    mjr_render(viewport, &scn, &con);
 
     // print simulation time
     mjrRect rect1 = {0, viewport.height - 50, 300, 50};
